@@ -17,7 +17,7 @@ public class Root {
 
     @GET
     @Produces(MediaType.TEXT_PLAIN)
-    @Path("/bpl")
+    @Path("/bpll")
     public String hello2() {
         return "GOOOOOOOOOOOOOT iT!";
     }
