@@ -1,8 +1,6 @@
 package ru.bookpleasure;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 @Path("/")
@@ -15,11 +13,18 @@ public class Root {
     }
 
 
-    @GET
+    @POST
+    @Consumes("application/x-www-form-urlencoded")
     @Produces(MediaType.TEXT_PLAIN)
-    @Path("/bpll")
-    public String hello2() {
-        return "GOOOOOOOOOOOOOT iT!";
+    @Path("/contact")
+    public String hello2(
+            @FormParam("name") String name,
+            @FormParam("email") String email,
+            @FormParam("message") String message) {
+        String subj = "Сообщение от " + name + " - " + email;
+        MailAgent.sendMailFromRobot("info@bookpleasure.ru", subj, message);
+
+        return "Ok";
     }
 
 }

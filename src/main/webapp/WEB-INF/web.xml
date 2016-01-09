@@ -14,6 +14,6 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>bpl</servlet-name>
-        <url-pattern>/bp/*</url-pattern>
+        <url-pattern>/api/*</url-pattern>
     </servlet-mapping>
 </web-app>
