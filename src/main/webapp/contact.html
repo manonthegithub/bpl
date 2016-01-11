@@ -93,24 +93,21 @@
                     <div class="row">
                         <div class="form-group col-lg-6">
                             <label>Ваше имя</label>
-                            <input type="text" class="form-control" name="name">
+                            <input type="text" required class="form-control" name="name">
                         </div>
                         <div class="form-group col-lg-6">
                             <label>Ваш email</label>
-                            <input type="email" class="form-control" name="email">
+                            <input type="email" required class="form-control" name="email">
                         </div>
-                       <!-- <div class="form-group col-lg-4">
-                            <label>Phone Number</label>
-                            <input type="tel" class="form-control">
-                        </div>-->
                         <div class="clearfix"></div>
                         <div class="form-group col-lg-12">
                             <label>Сообщение</label>
-                            <textarea class="form-control" rows="6" name="message"></textarea>
+                            <textarea class="form-control" required rows="6" name="message"></textarea>
                         </div>
                         <div class="form-group col-lg-12">
-                           <!-- <input type="hidden" name="save" value="contact">-->
                             <button type="submit" class="btn btn-default">Отправить</button>
+                            <img id="spinner" hidden=true alt="activity indicator" src="img/ajax-loader.gif">
+                            <span id="submit-result"></span>
                         </div>
                     </div>
                 </form>
@@ -133,9 +130,10 @@
 
 <!-- jQuery -->
 <script src="js/jquery.js"></script>
-<script src="js/custom/contact.js"></script>
 <!-- Bootstrap Core JavaScript -->
 <script src="js/bootstrap.min.js"></script>
+
+<script src="js/custom/contact.js"></script>
 
 </body>
 
