@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Context>
+
+
+    <Resource auth="Container"
+              description="DB Connection"
+              driverClass="org.postgresql.Driver"
+              maxPoolSize="4"
+              minPoolSize="2"
+              acquireIncrement="1"
+              name="jdbc/data"
+              user="postgres"
+              password="111111"
+              factory="org.apache.naming.factory.BeanFactory"
+              type="com.mchange.v2.c3p0.ComboPooledDataSource"
+              jdbcUrl="jdbc:postgresql://localhost:5432/t"/>
+
+
+    <!-- <Resource
+             name="jdbc/auth"
+             description="Sample authentication"
+             type="javax.sql.DataSource"
+             auth="Container"
+             driverClassName="org.postgresql.Driver"
+             maxActive="10" maxIdle="3"
+             maxWait="10000"
+             username="postgres"
+             password="111111"
+             url="jdbc:postgresql://localhost:5432/t"
+             validationQuery="values(1)"/>-->
+
+    <Realm className="org.apache.catalina.realm.DataSourceRealm"
+           userTable="APPUSERS"
+           userNameCol="USERNAME"
+           userCredCol="PASSWORD"
+           userRoleTable="APPROLES"
+           roleNameCol="approles"
+           localDataSource="true"
+           dataSourceName="jdbc/data"/>
+
+</Context>

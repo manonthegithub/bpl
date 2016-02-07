@@ -86,7 +86,107 @@
                 <hr>
             </div>
             <div class="col-lg-12 text-center">
-                <img class="img-responsive img-border img-full" src="img/slide-1.jpg" alt="">
+                <!--<form method="POST" target="_blank">
+
+                    <input name="label" type="hidden" value="">
+                    <input name="receiver" type="hidden" value="">
+                    <input name="quickpay-form" type="hidden" value="shop">
+                    <input name="referer" type="hidden" value="https://money.yandex.ru/embed/quickpay/shop.xml">
+                    <input name="is-inner-form" type="hidden" value="true">
+                    <input type="hidden" name="need-fio" value="true">
+                    <input type="hidden" name="need-phone" value="true">
+                    <input type="hidden" name="need-email" value="true">
+                    <input type="hidden" name="need-address" value="true">
+
+                    <table class="b-form__grid">
+
+                    <tbody>
+                        <tr>
+                            <td class="b-form__label">
+                                <label>Назначение перевода</label>
+                            </td>
+                            <td class="b-form__field">
+                                <div class="b-form__label">оплата заказа</div>
+                                <input type="hidden" name="targets" value="оплата заказа">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="b-form__label">
+                                <label>Сумма</label>
+                            </td>
+                            <td class="b-form__field">
+                                <div style="width: 60px;" class="b-input-text b-input-text_inline">
+                                    <input class="b-input-text__input" style="text-align: right;" name="sum" value="1500" id="sum" type="text" maxlength="10" data-type="number">
+                                </div>
+                                <span class="b-form__input-postfix">руб.</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="b-form__label">
+                                <label>Способ оплаты</label>
+                            </td>
+                            <td class="b-form__field">
+                                <span class="b-form-radio b-form-radio_size_l b-form-radio_theme_grey i-bem b-form-radio_js_inited" onclick="return {'b-form-radio':{name:'b-form-radio',id:'id1168773710820'}}">
+                                    <label class="b-form-radio__button b-form-radio__button_id_ b-form-radio__button_disabled_no b-form-radio__button_focused_yes b-form-radio__button_checked_yes b-form-radio__button_side_left" for="id1168773710830" title="платеж с карты VISA или MasterCard">
+                                        <span class="b-form-radio__inner">
+                                            <span class="b-form-radio__content">
+                                                <input type="radio" name="paymentType" class="b-form-radio__radio" checked="" id="id1168773710830" value="AC">
+                                                <span class="b-form-radio__text">
+                                                    <img class="b-icon b-form-radio__ico" src="/i/quickpay-widget__any-card.png" alt="" title="">
+                                                </span>
+                                                <i class="b-form-radio__click"></i>
+                                            </span>
+                                        </span>
+                                    </label>
+                                    <label class="b-form-radio__button b-form-radio__button_id_ b-form-radio__button_disabled_no b-form-radio__button_next-for-checked_yes b-form-radio__button_side_right" for="id1168773710853" title="платеж из кошелька в Яндекс.Деньгах">
+                                        <span class="b-form-radio__inner">
+                                            <span class="b-form-radio__content">
+                                                <input type="radio" name="paymentType" class="b-form-radio__radio" id="id1168773710853" value="PC">
+                                                <span class="b-form-radio__text">
+                                                    <img class="b-icon b-form-radio__ico" src="/i/quickpay-widget__yamoney.png" alt="" title="">
+                                                </span>
+                                                <i class="b-form-radio__click"></i>
+                                            </span>
+                                        </span>
+                                    </label>
+                                </span>
+                            </td>
+                        </tr>
+                        <tr class="b-form__buttons">
+                            <td style="text-align: right;"></td>
+                            <td>
+                                <span class="b-button b-button_1 b-button_orange" data-block="b-button">
+                                    <span class="b-button__inner">Оплатить</span>
+                                    <input type="button" value="Оплатить" class="b-button__input" name="submit-button">
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                    <input type="hidden" name="successURL" value="http://oursite">
+                    <input type="hidden" name="quickpay-back-url" value="https://money.yandex.ru/embed/quickpay/shop.xml">
+                </form>
+                <img class="img-responsive img-border img-full" src="img/slide-1.jpg" alt="">-->
+                <form method="POST" action="https://money.yandex.ru/quickpay/confirm.xml">
+                    <input type="hidden" name="receiver" value="410012704677829">
+                    <input type="hidden" name="formcomment"
+                           value="Проект «Железный человек»: реактор холодного ядерного синтеза">
+                    <input type="hidden" name="short-dest"
+                           value="Проект «Железный человек»: реактор холодного ядерного синтеза">
+                    <input type="hidden" name="label" value="$order_id">
+                    <input type="hidden" name="quickpay-form" value="donate">
+                    <input type="hidden" name="targets" value="транзакция {order_id}">
+                    <input type="hidden" name="sum" value="4568.25" data-type="number">
+                    <input type="hidden" name="comment" value="Хотелось бы дистанционного управления.">
+                    <input type="hidden" name="need-fio" value="true">
+                    <input type="hidden" name="need-email" value="true">
+                    <input type="hidden" name="need-phone" value="true">
+                    <input type="hidden" name="need-address" value="true">
+                    <label><input type="radio" name="paymentType" value="PC">Яндекс.Деньгами</label>
+                    <label><input type="radio" name="paymentType" value="AC">Банковской картой</label>
+                    <!--<input type="submit" value="Перевести">-->
+                    <button type="submit" class="btn btn-default">Заказать</button>
+                </form>
 
                 <h2>Post Title
                     <br>
