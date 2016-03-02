@@ -50,7 +50,7 @@
 			<scope>provided</scope>
 		</dependency>
 
-		<!--<dependency>
+	<!--	<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
 			<version>5.0.6.Final</version>
@@ -58,6 +58,11 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
+			<version>5.0.6.Final</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-jpamodelgen</artifactId>
 			<version>5.0.6.Final</version>
 		</dependency>
 		<dependency>
@@ -75,11 +80,6 @@
 			<artifactId>jta</artifactId>
 			<version>1.1</version>
 		</dependency>
-		<!--<dependency>
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<version>9.4.1207.jre7</version>
-		</dependency>-->
 
 
 		<dependency>
@@ -87,10 +87,31 @@
 			<artifactId>jersey-container-servlet</artifactId>
 			<version>2.22.1</version>
 		</dependency>
+
 		<dependency>
-			<groupId>org.glassfish.jersey.containers</groupId>
-			<artifactId>jersey-container-servlet</artifactId>
+			<groupId>org.glassfish.jersey.media</groupId>
+			<artifactId>jersey-media-json-jackson</artifactId>
 			<version>2.22.1</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>2.4</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.6.3</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+			<version>2.6.3</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<version>2.6.3</version>
 		</dependency>
 
 
@@ -100,6 +121,11 @@
             <version>1.5.5</version>
         </dependency>
 
+		<dependency>
+			<groupId>net.iharder</groupId>
+			<artifactId>base64</artifactId>
+			<version>2.3.8</version>
+		</dependency>
 
 	</dependencies>
 	<profiles>
@@ -127,4 +153,38 @@
 			</build>
 		</profile>
 	</profiles>
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+					<compilerArguments>
+						<processor>org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor</processor>
+					</compilerArguments>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.jsonschema2pojo</groupId>
+				<artifactId>jsonschema2pojo-maven-plugin</artifactId>
+				<version>0.4.20</version>
+				<configuration>
+					<sourceDirectory>${basedir}/src/main/resources/schema</sourceDirectory>
+					<targetPackage>ru.bookpleasure.models</targetPackage>
+					<outputDirectory>${project.build.directory}/generated-sources</outputDirectory>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+
 </project>

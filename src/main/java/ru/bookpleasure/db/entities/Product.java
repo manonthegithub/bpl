@@ -17,7 +17,10 @@ public class Product implements Persistable {
     public String name;
     public String description;
     public int quantity;
+    public int availableNumber;
     public boolean enabled;
+    public String imageFilename;
+    public int price;
 
     @Enumerated(EnumType.STRING)
     public ProductCategory category;

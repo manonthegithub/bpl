@@ -12,6 +12,9 @@ body {
     background-size: cover;
     -o-background-size: cover;
 }
+#rub {
+    font-family: rubl sign;
+}
 
 h1,
 h2,

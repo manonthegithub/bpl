@@ -1,15 +1,20 @@
 package ru.bookpleasure;
 
-import ru.bookpleasure.db.PersistenceManager;
-import ru.bookpleasure.db.entities.Order;
+import net.iharder.Base64;
+import ru.bookpleasure.beans.ProductBean;
 import ru.bookpleasure.db.entities.Product;
+import ru.bookpleasure.models.ProductView;
 
-import javax.naming.InitialContext;
-import javax.naming.Context;
-
+import javax.servlet.ServletContext;
 import javax.sql.DataSource;
 import javax.ws.rs.*;
+import javax.ws.rs.Path;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.io.*;
+import java.nio.file.*;
+import java.util.List;
 
 @Path("/")
 public class Root {
@@ -21,7 +26,7 @@ public class Root {
     }
 
     @POST
-    @Consumes("application/x-www-form-urlencoded")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.TEXT_PLAIN)
     @Path("/contact")
     public void emailMessageToAdmin(
@@ -35,25 +40,50 @@ public class Root {
     @GET
     @Path("/adm")
     public String listOrders() throws Exception {
-        Context c = new InitialContext();
-        Context envCtx = (Context) c.lookup("java:comp/env");
-        DataSource ds = (DataSource) envCtx.lookup("jdbc/data");
+
         return "ADMIN Ok";
     }
 
     @GET
-    @Path("/adm/products")
-    public String listProducts() throws Exception {
-        Order o = new Order();
-        o.setId((int) Math.random());
-        o.setName("sdcsc");
-        Product p = new Product();
-        p.name = "scsdc";
-        p.enabled = true;
-        p.category = Product.ProductCategory.BOOKBOX;
-        PersistenceManager.saveEntity(o);
-        PersistenceManager.saveEntity(p);
-        return "ADMIN Okkkk";
+    @Path("/boxes")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<ProductView> listEnabledProducts(){
+        ProductBean pb = new ProductBean();
+        List<ProductView> result = pb.getEnabledProductByCategory(Product.ProductCategory.BOOKBOX.toString());
+        return result;
+    }
+
+    @GET
+    @Path("/adm/boxes")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<ProductView> listProducts(){
+        ProductBean pb = new ProductBean();
+        List<ProductView> result = pb.getProductByCategory(Product.ProductCategory.BOOKBOX.toString());
+        return result;
+    }
+
+    @POST
+    @Path("/adm/boxes/")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response saveProduct(@Context ServletContext context, ProductView productView) throws IOException{
+        if(productView.getAvailableNumber() == null){
+            productView.setAvailableNumber(productView.getQuantity());
+        }
+        OutputStream file = null;
+        File imagePath = Paths.get(context.getRealPath("/img/products")).toFile();
+        imagePath.mkdirs();
+        File image = new File(imagePath,productView.getImageLink());
+        if(!image.createNewFile()) return Response.status(400).entity("Файл с таким именем уже существует").build();
+        try {
+            file = new BufferedOutputStream(new FileOutputStream(image));
+            file.write(Base64.decode(productView.getBase64ImageFile()));
+            file.flush();
+        }finally {
+            if (file != null) file.close();
+        }
+        ProductBean pb = new ProductBean();
+        pb.saveProduct(productView);
+        return Response.ok().build();
     }
 
 }
