@@ -1,3 +1,4 @@
+
 var ProductListForAdmin = React.createClass({
   getInitialState: function() {
     return {data: []};
@@ -14,6 +15,19 @@ var ProductListForAdmin = React.createClass({
       }.bind(this)
     });
   },
+
+  removeButtonClickHandler: function (id){
+      $.ajax({
+        type: "DELETE",
+        url: './api/adm/boxes/'+ id,
+        success: function(){
+            this.setState({
+              data: this.state.data.filter((x) => x.id != id )
+            });
+        }.bind(this),
+      });
+  },
+
   render: function() {
       var productNodes = this.state.data.map(function(prod) {
         return (
@@ -22,9 +36,11 @@ var ProductListForAdmin = React.createClass({
               price={prod.price}
               image={prod.imageLink}
               description={prod.description}
-              enabled={prod.enabled}/>
+              enabled={prod.enabled}
+              id={prod.id}
+              removeHandler={this.removeButtonClickHandler.bind(this, prod.id)}/>
         );
-      });
+      }.bind(this));
       return (
         <div id="products-list" className="container">
           <NewBoxForm/>
@@ -36,6 +52,7 @@ var ProductListForAdmin = React.createClass({
 
 
 var ProductViewForAdmin = React.createClass({
+
   render: function() {
     return (
         <div className="row">
@@ -45,13 +62,16 @@ var ProductViewForAdmin = React.createClass({
                     price={this.props.price}
                     image={this.props.image}
                     description={this.props.description} />
-                <div>Removeeeee</div>
-                <div>
-                    <label className="checkbox-inline">
-                        <input type="checkbox" name="enabled" defaultValue="true" />
-                        виден клиентам
-                    </label>
-                </div>
+
+                <button onClick={this.props.removeHandler} className="btn btn-default">
+                    Удалить
+                </button>
+
+                <label className="checkbox-inline">
+                    <input type="checkbox" name="enabled" checked={this.props.enabled} defaultValue="true" />
+                    виден клиентам
+                </label>
+
             </div>
         </div>
 
@@ -93,8 +113,6 @@ var NewBoxForm = React.createClass({
                 });
             };
         }
-
-
 
         return false;
 

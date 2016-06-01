@@ -3,24 +3,25 @@ package ru.bookpleasure.db.entities;
 import ru.bookpleasure.db.Persistable;
 
 import javax.persistence.*;
+import java.util.UUID;
 
 /**
  * Created by Админ on 1/14/2016.
  */
 @Entity
-@Table(name = "orderses")
+@Table(name = "orders")
 public class Order implements Persistable {
     public Order() {
     }
 
-    public Order(String name, int id) {
+    public Order(String name, UUID id) {
         this.name = name;
         this.id = id;
     }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private UUID id;
 
     public String getName() {
         return name;
@@ -32,11 +33,11 @@ public class Order implements Persistable {
 
     private String name;
 
-    public int getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

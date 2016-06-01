@@ -2,18 +2,14 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
          id="WebApp_ID" version="3.0">
+
     <display-name>bpl</display-name>
+
     <servlet>
         <servlet-name>bpl</servlet-name>
-        <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
-        <init-param>
-            <param-name>jersey.config.server.provider.packages</param-name>
-            <param-value>ru.bookpleasure</param-value>
-        </init-param>
-        <init-param>
-            <param-name>jersey.config.server.provider.classnames</param-name>
-            <param-value>com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider</param-value>
-        </init-param>
+        <servlet-class>
+            org.springframework.web.servlet.DispatcherServlet
+        </servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
@@ -23,7 +19,7 @@
 
     <security-constraint>
         <web-resource-collection>
-            <web-resource-name>Wildcard means whole app requires authentication</web-resource-name>
+            <web-resource-name>Admin pages</web-resource-name>
             <url-pattern>/api/adm/*</url-pattern>
             <http-method>GET</http-method>
             <http-method>POST</http-method>
@@ -42,5 +38,8 @@
         <auth-method>BASIC</auth-method>
     </login-config>
 
+    <listener>
+        <listener-class>ru.bookpleasure.StartStopListener</listener-class>
+    </listener>
 
 </web-app>

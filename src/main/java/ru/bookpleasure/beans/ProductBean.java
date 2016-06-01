@@ -1,48 +1,68 @@
 package ru.bookpleasure.beans;
 
 
-import ru.bookpleasure.db.PersistenceManager;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.WebApplicationContext;
 import ru.bookpleasure.db.entities.Product;
 import ru.bookpleasure.db.entities.Product_;
+import ru.bookpleasure.db.entities.ResourceFile;
+import ru.bookpleasure.db.entities.ResourceFile_;
 import ru.bookpleasure.models.ProductView;
-
-
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
  * Created by Винда on 22.02.2016.
  */
+@Component
+@Lazy
+@Scope(
+        value = WebApplicationContext.SCOPE_REQUEST,
+        proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class ProductBean{
 
+    @PersistenceContext
+    EntityManager em;
 
 
     public ProductView getProductById(UUID id){
-        EntityManager em = PersistenceManager.getEntityManager();
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Product> query = cb.createQuery(Product.class);
-        Root<Product> productRoot = query.from(Product.class);
-        query.where(
-            cb.equal(
-                productRoot.get(Product_.id),
-                id
-            )
-        );
-
-        TypedQuery<Product> preparedQuery = em.createQuery(query);
-        Product r = preparedQuery.getSingleResult();
-        em.close();
+        Product r = em.find(Product.class, id);
         return convertToView(r);
     }
 
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Throwable.class)
+    public void removeProduct(UUID id) {
+
+        Product product = em.find(Product.class, id);
+
+        //todo вынести в бин работы с файлами
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<ResourceFile> query = cb.createQuery(ResourceFile.class);
+        Root<ResourceFile> fileRoot = query.from(ResourceFile.class);
+        query.where(
+                cb.like(
+                        fileRoot.get(ResourceFile_.name),
+                        "%" + product.imageFilename
+                )
+        );
+
+        TypedQuery<ResourceFile> preparedQuery = em.createQuery(query);
+        ResourceFile r = preparedQuery.getSingleResult();
+        em.remove(product);
+        em.remove(r);
+    }
+
     public List<ProductView> getProductByCategory(String category){
-        EntityManager em = PersistenceManager.getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Product> query = cb.createQuery(Product.class);
         Root<Product> productRoot = query.from(Product.class);
@@ -54,12 +74,10 @@ public class ProductBean{
         );
         TypedQuery<Product> preparedQuery = em.createQuery(query);
         List<ProductView> result =  convertListToView(preparedQuery.getResultList());
-        em.close();
         return result;
     }
 
     public List<ProductView> getEnabledProductByCategory(String category){
-        EntityManager em = PersistenceManager.getEntityManager();
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Product> query = cb.createQuery(Product.class);
         Root<Product> productRoot = query.from(Product.class);
@@ -72,42 +90,35 @@ public class ProductBean{
         );
         TypedQuery<Product> preparedQuery = em.createQuery(query);
         List<ProductView> result =  convertListToView(preparedQuery.getResultList());
-        em.close();
         return result;
     }
 
-    public void saveProduct(ProductView productView){
+    @Transactional(propagation = Propagation.REQUIRED)
+    public ProductView saveProduct(ProductView productView) {
         Product product = convertToProduct(productView);
-        PersistenceManager.saveEntity(product);
+        return convertToView(em.merge(product));
     }
 
-    private List<ProductView> convertListToView(List<Product> found ){
-        return found.
-            stream().
-            map(new Function<Product, ProductView>() {
-                @Override
-                public ProductView apply(Product o) {
-                    return convertToView(o);
-                }
-            }).
-            collect(Collectors.<ProductView>toList());
+    private static List<ProductView> convertListToView(List<Product> found) {
+        List<ProductView> pv = new ArrayList<ProductView>();
+        for (Product p : found) {
+            pv.add(convertToView(p));
+        }
+        return pv;
     }
 
-    private List<Product> convertListToProduct(List<ProductView> found ){
-        return found.
-            stream().
-            map(new Function<ProductView, Product>() {
-                @Override
-                public Product apply(ProductView o) {
-                    return convertToProduct(o);
-                }
-            }).
-            collect(Collectors.<Product>toList());
+    private static List<Product> convertListToProduct(List<ProductView> found) {
+        List<Product> p = new ArrayList<Product>();
+        for (ProductView pv : found) {
+            p.add(convertToProduct(pv));
+        }
+        return p;
     }
 
-    private ProductView convertToView(Product found){
+    private static ProductView convertToView(Product found) {
         ProductView view = new ProductView();
         view.setId(found.id);
+        view.setEnabled(found.enabled);
         view.setName(found.name);
         view.setAvailableNumber(found.availableNumber);
         view.setCategory(found.category.toString());
@@ -118,7 +129,7 @@ public class ProductBean{
         return view;
     }
 
-    private Product convertToProduct(ProductView productView){
+    private static Product convertToProduct(ProductView productView) {
         Product product = new Product();
         product.id = productView.getId();
         product.name = productView.getName();
