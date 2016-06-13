@@ -1,24 +1,17 @@
 package ru.bookpleasure.beans;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.context.WebApplicationContext;
 import ru.bookpleasure.db.entities.Product;
-import ru.bookpleasure.db.entities.Product_;
 import ru.bookpleasure.db.entities.ResourceFile;
-import ru.bookpleasure.db.entities.ResourceFile_;
 import ru.bookpleasure.models.ProductView;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import ru.bookpleasure.repos.FilesRepo;
+import ru.bookpleasure.repos.ProductsRepo;
+
 import java.util.*;
 
 /**
@@ -26,77 +19,45 @@ import java.util.*;
  */
 @Component
 @Lazy
-@Scope(
-        value = WebApplicationContext.SCOPE_REQUEST,
-        proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class ProductBean{
 
-    @PersistenceContext
-    EntityManager em;
+    @Autowired
+    ProductsRepo productsRepo;
+
+    @Autowired
+    FilesRepo filesRepo;
 
 
     public ProductView getProductById(UUID id){
-        Product r = em.find(Product.class, id);
+        Product r = productsRepo.findOne(id);
         return convertToView(r);
     }
 
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Throwable.class)
     public void removeProduct(UUID id) {
 
-        Product product = em.find(Product.class, id);
+        Product product = productsRepo.findOne(id);
+        List<ResourceFile> resourceFile = filesRepo.findByNameEndingWith(product.imageFilename);
 
-        //todo вынести в бин работы с файлами
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<ResourceFile> query = cb.createQuery(ResourceFile.class);
-        Root<ResourceFile> fileRoot = query.from(ResourceFile.class);
-        query.where(
-                cb.like(
-                        fileRoot.get(ResourceFile_.name),
-                        "%" + product.imageFilename
-                )
-        );
+        filesRepo.delete(resourceFile);
+        productsRepo.delete(product);
 
-        TypedQuery<ResourceFile> preparedQuery = em.createQuery(query);
-        ResourceFile r = preparedQuery.getSingleResult();
-        em.remove(product);
-        em.remove(r);
     }
 
     public List<ProductView> getProductByCategory(String category){
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Product> query = cb.createQuery(Product.class);
-        Root<Product> productRoot = query.from(Product.class);
-        query.where(
-            cb.equal(
-                productRoot.get(Product_.category),
-                Product.ProductCategory.valueOf(category)
-            )
-        );
-        TypedQuery<Product> preparedQuery = em.createQuery(query);
-        List<ProductView> result =  convertListToView(preparedQuery.getResultList());
-        return result;
+        List<Product> products = productsRepo.findByCategory(Product.ProductCategory.valueOf(category));
+        return convertListToView(products);
     }
 
     public List<ProductView> getEnabledProductByCategory(String category){
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Product> query = cb.createQuery(Product.class);
-        Root<Product> productRoot = query.from(Product.class);
-        query.where(
-            cb.equal(
-                productRoot.get(Product_.category),
-                Product.ProductCategory.valueOf(category)
-            ),
-            cb.equal(productRoot.get(Product_.enabled), true)
-        );
-        TypedQuery<Product> preparedQuery = em.createQuery(query);
-        List<ProductView> result =  convertListToView(preparedQuery.getResultList());
-        return result;
+        List<Product> products = productsRepo.findByCategoryAndEnabledTrue(Product.ProductCategory.valueOf(category));
+        return convertListToView(products);
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
     public ProductView saveProduct(ProductView productView) {
         Product product = convertToProduct(productView);
-        return convertToView(em.merge(product));
+        return convertToView(productsRepo.save(product));
     }
 
     private static List<ProductView> convertListToView(List<Product> found) {

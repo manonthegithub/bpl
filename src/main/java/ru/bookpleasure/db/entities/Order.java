@@ -1,7 +1,5 @@
 package ru.bookpleasure.db.entities;
 
-import ru.bookpleasure.db.Persistable;
-
 import javax.persistence.*;
 import java.util.UUID;
 
@@ -10,7 +8,7 @@ import java.util.UUID;
  */
 @Entity
 @Table(name = "orders")
-public class Order implements Persistable {
+public class Order {
     public Order() {
     }
 

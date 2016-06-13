@@ -1,7 +1,5 @@
 package ru.bookpleasure.db.entities;
 
-import ru.bookpleasure.db.Persistable;
-
 import javax.persistence.*;
 import java.util.UUID;
 
@@ -9,7 +7,7 @@ import java.util.UUID;
  * Created by Kirill on 30/03/16.
  */
 @Entity
-public class ResourceFile implements Persistable {
+public class ResourceFile {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

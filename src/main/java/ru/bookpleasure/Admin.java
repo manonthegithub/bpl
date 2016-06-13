@@ -70,11 +70,16 @@ public class Admin {
         if (productView.getId() == null) {
             productView.setId(UUID.randomUUID());
         }
-        //todo сделать вызов одного метода и всё в транзакции
-        fb.save(
-                productView.getImageLink(),
-                Base64.decode(productView.getBase64ImageFile()),
-                context.getRealPath(FilesBean.IMAGE_FILES_PATH));
+
+        if (productView.getImageLink() != null && productView.getBase64ImageFile() != null) {
+            String fileName = UUID.randomUUID().toString() +
+                    productView.getImageLink().substring(productView.getImageLink().lastIndexOf("."));
+            productView.setImageLink(fileName);
+
+            fb.save(fileName,
+                    Base64.decode(productView.getBase64ImageFile()),
+                    context.getRealPath(FilesBean.IMAGE_FILES_PATH));
+        }
 
         return pb.saveProduct(productView);
     }
@@ -87,8 +92,6 @@ public class Admin {
     )
     @ResponseBody
     public List<ProductView> listProducts() {
-
-        List<ProductView> result = pb.getProductByCategory(Product.ProductCategory.BOOKBOX.toString());
-        return result;
+        return pb.getProductByCategory(Product.ProductCategory.BOOKBOX.toString());
     }
 }
