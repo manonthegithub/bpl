@@ -10,4 +10,6 @@ import java.util.UUID;
  */
 public interface OrdersRepo extends CrudRepository<Order, UUID> {
 
+    Order findByNumberForCustomer(Long orderNumber);
+
 }

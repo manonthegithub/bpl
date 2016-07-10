@@ -1,0 +1,134 @@
+{
+  "$schema": "http://bookpleasure.ru",
+  "id": "http://bookpleasure.ru",
+  "type": "object",
+  "properties": {
+    "id": {
+      "description": "человекочитаемый ид заказа, у яндекса это label",
+      "type": "string"
+    },
+    "isBasket": {
+      "description": "черновик заказа (корзина) или сформированный заказ",
+      "type": "boolean",
+      "default": "true"
+    },
+    "status": {
+      "type": "string"
+    },
+    "totalAmount": {
+      "type": "string"
+    },
+    "paymentInfo": {
+      "type": "object",
+      "properties": {
+        "operationId": {
+          "description": "идентификатор платежа в электронном кошельке",
+          "type": "string"
+        },
+        "amount": {
+          "description": "Сумма, которая зачислена на счет получателя.",
+          "type": "string"
+        },
+        "withdrawAmount": {
+          "description": "Сумма, которая списана со счета отправителя.",
+          "type": "string"
+        },
+        "datetime": {
+          "description": "Дата совершения платежа",
+          "type": "string",
+          "format": "date"
+        },
+        "currency": {
+          "type": "string"
+        },
+        "paymentSource": {
+          "description": "происхождение платежа,идентифицирует конкретную систему платежей, например Яндекс",
+          "type": "string"
+        }
+      },
+      "required": [
+        "operationId",
+        "amount",
+        "paymentSource"
+      ]
+    },
+    "productInfos": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "price": {
+            "type": "string"
+          },
+          "quantity": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "required": [
+          "id",
+          "quantity"
+        ]
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "customerDetailsInfo": {
+      "type": "object",
+      "properties": {
+        "lastname": {
+          "type": "string"
+        },
+        "firstname": {
+          "type": "string"
+        },
+        "middlename": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "lastname",
+        "firstname"
+      ]
+    },
+    "addressInfo": {
+      "type": "object",
+      "properties": {
+        "city": {
+          "type": "string"
+        },
+        "street": {
+          "type": "string"
+        },
+        "building": {
+          "type": "string"
+        },
+        "suite": {
+          "type": "string"
+        },
+        "flat": {
+          "type": "string"
+        },
+        "zip": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "city"
+      ]
+    }
+  }
+}

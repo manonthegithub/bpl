@@ -22,7 +22,6 @@
 
 
     <context:component-scan base-package="ru.bookpleasure"/>
-    <mvc:annotation-driven/>
 
     <jee:jndi-lookup id="bplDataSource" jndi-name="java:comp/env/jdbc/data"/>
     <bean id="myEmf" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
@@ -37,7 +36,20 @@
     <jpa:repositories
             base-package="ru.bookpleasure.repos"
             entity-manager-factory-ref="myEmf"
-            transaction-manager-ref="myTxManager"
-    />
+            transaction-manager-ref="myTxManager"/>
+
+
+    <bean class="org.springframework.data.web.config.SpringDataWebConfiguration"/>
+    <bean id="sortResolver" class="org.springframework.data.web.SortHandlerMethodArgumentResolver"/>
+    <bean id="pageableResolver" class="org.springframework.data.web.PageableHandlerMethodArgumentResolver">
+        <constructor-arg ref="sortResolver"/>
+    </bean>
+
+    <mvc:annotation-driven>
+        <mvc:argument-resolvers>
+            <ref bean="sortResolver"/>
+            <ref bean="pageableResolver"/>
+        </mvc:argument-resolvers>
+    </mvc:annotation-driven>
 
 </beans>

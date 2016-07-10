@@ -2,20 +2,30 @@ package ru.bookpleasure;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import ru.bookpleasure.beans.OrderBean;
 import ru.bookpleasure.beans.ProductBean;
 import ru.bookpleasure.db.entities.Product;
+import ru.bookpleasure.models.OrderView;
 import ru.bookpleasure.models.ProductView;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/")
 public class Root {
 
-    @Autowired
     @Lazy
+    @Autowired
     ProductBean pb;
+
+    @Lazy
+    @Autowired
+    OrderBean ob;
+
+
 
     @RequestMapping(
             method = RequestMethod.GET,
@@ -46,9 +56,21 @@ public class Root {
     )
     @ResponseBody
     public List<ProductView> listEnabledProducts(){
-
-        List<ProductView> result = pb.getEnabledProductByCategory(Product.ProductCategory.BOOKBOX.toString());
+        List<ProductView> result = pb.getEnabledProductByCategory(
+                Product.ProductCategory.BOOKBOX.toString(),
+                Optional.<Sort>empty()
+        );
         return result;
+    }
+
+    @RequestMapping(
+            value = "/order",
+            method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_VALUE
+    )
+    @ResponseBody
+    public OrderView createOrUpdateOrder(OrderView orderView) {
+        return ob.createOrUpdateOrder(orderView);
     }
 
 

@@ -4,44 +4,34 @@
   "type": "object",
   "properties": {
     "id": {
-      "id": "http://bookpleasure.ru/id",
       "type": "string",
       "format":"uuid"
     },
     "category": {
-      "id": "http://bookpleasure.ru/category",
       "type": "string"
     },
     "name": {
-      "id": "http://bookpleasure.ru/name",
       "type": "string"
     },
     "description": {
-      "id": "http://bookpleasure.ru/description",
       "type": "string"
     },
     "imageLink": {
-      "id": "http://bookpleasure.ru/imageLink",
       "type": "string"
     },
     "quantity": {
-      "id": "http://bookpleasure.ru/quantity",
       "type": "integer"
     },
     "availableNumber": {
-      "id": "http://bookpleasure.ru/availableNumber",
       "type": "integer"
     },
     "price": {
-      "id": "http://bookpleasure.ru/price",
       "type": "integer"
     },
     "enabled": {
-      "id": "http://bookpleasure.ru/enabled",
       "type": "boolean"
     },
     "base64ImageFile":{
-      "id": "http://bookpleasure.ru/enabled",
       "type": "string"
     }
   },

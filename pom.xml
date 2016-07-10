@@ -39,7 +39,7 @@
 		<maven.compiler.target>1.6</maven.compiler.target>
 
 
-        <spring.version>4.2.6.RELEASE</spring.version>
+        <spring.version>4.3.0.RELEASE</spring.version>
         <hibernate.version>5.1.0.Final</hibernate.version>
 	</properties>
 
@@ -98,10 +98,15 @@
             <artifactId>spring-webmvc</artifactId>
             <version>${spring.version}</version>
         </dependency>
-		<dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-jpa</artifactId>
-			<version>1.10.1.RELEASE</version>
+            <version>1.10.2.RELEASE</version>
 		</dependency>
 
         <dependency>
@@ -115,6 +120,14 @@
             <artifactId>commons-lang</artifactId>
             <version>2.4</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>6.8</version>
+            <scope>test</scope>
+        </dependency>
+
 
     </dependencies>
 	<profiles>
@@ -177,22 +190,21 @@
             </plugin>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
+                <version>3.5.1</version>
 				<configuration>
 					<source>1.6</source>
 					<target>1.6</target>
-					<compilerArguments>
-						<processor>org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor</processor>
-					</compilerArguments>
 				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.jsonschema2pojo</groupId>
 				<artifactId>jsonschema2pojo-maven-plugin</artifactId>
-				<version>0.4.20</version>
+                <version>0.4.23</version>
 				<configuration>
 					<sourceDirectory>${basedir}/src/main/resources/schema</sourceDirectory>
 					<targetPackage>ru.bookpleasure.models</targetPackage>
 					<outputDirectory>${project.build.directory}/generated-sources</outputDirectory>
+                    <generateBuilders>true</generateBuilders>
 				</configuration>
 				<executions>
 					<execution>

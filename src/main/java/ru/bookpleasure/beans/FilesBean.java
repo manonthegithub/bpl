@@ -7,8 +7,13 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.bookpleasure.db.entities.ResourceFile;
 import ru.bookpleasure.repos.FilesRepo;
+
+import javax.servlet.ServletContext;
 import java.io.*;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 
 /**
@@ -21,31 +26,49 @@ public class FilesBean {
     @Autowired
     FilesRepo filesRepo;
 
-    public static final String IMAGE_FILES_PATH = "/img/products";
+    @Autowired
+    ServletContext context;
+
+    private static final String IMAGE_FILES_PATH = "/img/products";
 
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Throwable.class)
-    public void save(String fileName, byte[] fileData, String path) {
+    public void save(String fileName, byte[] fileData) {
         ResourceFile fileEntity = new ResourceFile();
-        fileEntity.name = fileName;
-        fileEntity.data = fileData;
+        fileEntity.setName(fileName);
+        fileEntity.setData(fileData);
         filesRepo.save(fileEntity);
-        saveToDisk(fileName, fileData, path);
+        saveToDisk(fileName, fileData);
     }
 
-    public void loadFilesFromDbAfterDeploy(String path) {
+    public List<ResourceFile> findByFilenamePrefix(String filename) {
+        return filesRepo.findByNameEndingWith(filename);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void delete(ResourceFile... files) {
+        Collection<ResourceFile> filesCollection = Arrays.asList(files);
+        delete(filesCollection);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void delete(Collection<ResourceFile> files) {
+        filesRepo.delete(files);
+    }
+
+    public void loadFilesFromDbAfterDeploy() {
         try {
             Iterable<ResourceFile> files = filesRepo.findAll();
             for (ResourceFile rf : files) {
-                FilesBean.saveToDisk(rf.name, rf.data, path);
+                this.saveToDisk(rf.getName(), rf.getData());
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private static void saveToDisk(String fileName, byte[] data, String path) {
+    private void saveToDisk(String fileName, byte[] data) {
         OutputStream file = null;
-        File imagePath = Paths.get(path).toFile();
+        File imagePath = Paths.get(context.getRealPath(IMAGE_FILES_PATH)).toFile();
         imagePath.mkdirs();
         File image = new File(imagePath, fileName);
         try {
