@@ -7,7 +7,7 @@ import java.util.UUID;
  * Created by Kirill on 08/07/16.
  */
 @Entity
-@Table(name = "order-products")
+@Table(name = "order_products")
 public class OrderProduct {
 
     @Id
@@ -16,7 +16,7 @@ public class OrderProduct {
 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "product_id")
     private Product product;
 
     @Column(nullable = false)
@@ -24,8 +24,8 @@ public class OrderProduct {
 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order-id")
-    private Order order;
+    @JoinColumn(name = "order_id")
+    private Order linkedOrder;
 
     public UUID getId() {
         return id;
@@ -52,10 +52,10 @@ public class OrderProduct {
     }
 
     public Order getOrder() {
-        return order;
+        return linkedOrder;
     }
 
     public void setOrder(Order order) {
-        this.order = order;
+        this.linkedOrder = order;
     }
 }

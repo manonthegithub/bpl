@@ -15,7 +15,7 @@ public class TimestampTest {
 
     @Test(dataProvider = "provider")
     public void testStringToTimestampConversion(String date) {
-        Timestamp ts = new Timestamp(DatatypeConverter.parseDateTime(date).getTime().getTime());
+        new Timestamp(DatatypeConverter.parseDateTime(date).getTime().getTime());
     }
 
     @DataProvider

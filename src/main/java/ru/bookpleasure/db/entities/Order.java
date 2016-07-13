@@ -12,16 +12,13 @@ import java.util.UUID;
  */
 @Entity
 @Table(name = "orders")
-@SequenceGenerator(name = "order_number", initialValue = 1, allocationSize = 100)
+@SequenceGenerator(name = "order_number_seq", initialValue = 1, allocationSize = 100)
 public class Order {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
-
     //человекочитаемый идентификатор для отслеживания клиентом
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_number")
-    @Column(nullable = false, unique = true)
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_number_seq")
+    @Column(name = "number_for_customer")
     private Long numberForCustomer;
 
     @Enumerated(EnumType.STRING)
@@ -32,7 +29,7 @@ public class Order {
     @Column(name = "total_amount", scale = 2)
     private BigDecimal totalAmount;
 
-    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "linkedOrder", fetch = FetchType.LAZY)
     private List<OrderProduct> products;
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "order")
@@ -66,14 +63,6 @@ public class Order {
     @PreUpdate
     void updatedAt() {
         this.updatedAt = Timestamp.from(Instant.now());
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
     }
 
     public Long getNumberForCustomer() {

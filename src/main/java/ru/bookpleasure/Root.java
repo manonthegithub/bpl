@@ -69,7 +69,7 @@ public class Root {
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
     @ResponseBody
-    public OrderView createOrUpdateOrder(OrderView orderView) {
+    public OrderView createOrUpdateOrder(@RequestBody OrderView orderView) {
         return ob.createOrUpdateOrder(orderView);
     }
 

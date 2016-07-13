@@ -36,7 +36,7 @@ public class OrderBean {
     @Transactional(rollbackFor = Throwable.class)
     public OrderView createOrUpdateOrder(OrderView orderView) {
         Order order = orderViewToOrder(orderView);
-        order = ordersRepo.save(order);
+        order = ordersRepo.saveAndFlush(order);
         return orderToOrderView(order);
     }
 

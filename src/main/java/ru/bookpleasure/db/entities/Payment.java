@@ -45,7 +45,7 @@ public class Payment {
     private BigDecimal withdrawAmount;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "number_for_customer")
     private Order order;
 
     @PrePersist
