@@ -46,18 +46,23 @@ public class OrderBean {
             //существующий заказ
             order = ordersRepo.findByNumberForCustomer(Long.valueOf(orderView.getId()));
 
+            order.setTrackingNumber(orderView.getTrackingNumber());
+
             if (orderView.getIsBasket() && order.getStatus() == Order.Status.EDITING) {
                 saveProducts(order, orderView.getProductInfos());
             } else if (orderView.getIsBasket()) {
-                throw new IllegalArgumentException("Статус заказ не соответствует запросу");
+                throw new IllegalArgumentException("Статус заказа не соответствует запросу");
             } else if (order.getStatus() == Order.Status.EDITING) {
                 order.setStatus(Order.Status.AWAITING_PAYMENT);
             }
 
-
         } else {
             //новый заказ
             order = new Order();
+
+            if (orderView.getTrackingNumber() != null) {
+                throw new IllegalArgumentException("Созданный заказ не может иметь трекномера");
+            }
 
             if (orderView.getIsBasket()) {
                 order.setStatus(Order.Status.EDITING);
@@ -85,6 +90,10 @@ public class OrderBean {
             savePayment(order, orderView.getPaymentInfo());
         }
 
+        if (orderView.getStatus() != null) {
+            order.setStatus(Order.Status.valueOf(orderView.getStatus()));
+        }
+
         return order;
     }
 
@@ -92,7 +101,9 @@ public class OrderBean {
         OrderView result = new OrderView();
         result.withId(order.getNumberForCustomer().toString())
                 .withTotalAmount(order.getTotalAmount().toPlainString())
-                .withStatus(order.getStatus().readableValue());
+                .withIsBasket(order.getStatus() == Order.Status.EDITING)
+                .withStatus(order.getStatus().readableValue())
+                .withTrackingNumber(order.getTrackingNumber());
 
         if (order.getAddress() != null) {
             AddressInfo address = new AddressInfo();
@@ -226,7 +237,6 @@ public class OrderBean {
                 //если заказ отправлен, то бронируем товары
                 if (order.getStatus() != Order.Status.EDITING) {
                     product.setQuantity(product.getQuantity() - info.getQuantity());
-                    productsRepo.save(product);
                 }
 
                 totalAmount = totalAmount.add(product.getPrice().multiply(new BigDecimal(orderProduct.getNumber())));

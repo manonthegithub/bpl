@@ -15,7 +15,7 @@ public class OrderProduct {
     private UUID id;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "product_id")
     private Product product;
 

@@ -25,7 +25,7 @@ public class Product {
     //можно заказать
     private Boolean active;
 
-    @Column(name = Constants.CREATED_AT, nullable = false)
+    @Column(name = Constants.CREATED_AT, nullable = false, updatable = false)
     private Timestamp createdAt;
 
     @Column(scale = 2)

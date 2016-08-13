@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
-import java.util.UUID;
+import java.util.logging.StreamHandler;
 
 /**
  * Created by Админ on 1/14/2016.
@@ -29,10 +29,11 @@ public class Order {
     @Column(name = "total_amount", scale = 2)
     private BigDecimal totalAmount;
 
-    @OneToMany(mappedBy = "linkedOrder", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "linkedOrder", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<OrderProduct> products;
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "order")
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "payment_id")
     private Payment payment;
 
     @Column(name = Constants.CREATED_AT, nullable = false)
@@ -40,6 +41,11 @@ public class Order {
 
     @Column(name = Constants.UPDATED_AT, nullable = false)
     private Timestamp updatedAt;
+
+    private String comment;
+
+    @Column(name = "tracking_number")
+    private String trackingNumber;
 
     @Embedded
     private Address address;
@@ -139,6 +145,22 @@ public class Order {
 
     public void setPayment(Payment payment) {
         this.payment = payment;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public String getTrackingNumber() {
+        return trackingNumber;
+    }
+
+    public void setTrackingNumber(String trackingNumber) {
+        this.trackingNumber = trackingNumber;
     }
 
 

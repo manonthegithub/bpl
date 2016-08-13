@@ -24,25 +24,19 @@ public class Admin {
     @Lazy
     ProductBean pb;
 
-    @RequestMapping(
-            method = RequestMethod.GET)
+    @GetMapping()
     @ResponseBody
     public String listOrders() throws Exception {
-
         return "ADMIN Ok";
     }
 
-    @RequestMapping(
-            value = "/products/{id}",
-            method = RequestMethod.DELETE
-    )
+    @DeleteMapping(value = "/products/{id}")
     public void removeProduct(@PathVariable("id") UUID productID) {
         pb.removeProduct(productID);
     }
 
-    @RequestMapping(
+    @PutMapping(
             value = "/products",
-            method = RequestMethod.PUT,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
@@ -53,9 +47,8 @@ public class Admin {
     }
 
 
-    @RequestMapping(
+    @GetMapping(
             value = "/products",
-            method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ResponseBody

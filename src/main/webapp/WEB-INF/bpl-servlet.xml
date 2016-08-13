@@ -23,6 +23,8 @@
 
     <context:component-scan base-package="ru.bookpleasure"/>
 
+    <context:property-placeholder location="classpath:app.properties"/>
+
     <jee:jndi-lookup id="bplDataSource" jndi-name="java:comp/env/jdbc/data"/>
     <bean id="myEmf" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="dataSource" ref="bplDataSource"/>

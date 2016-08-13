@@ -86,7 +86,7 @@ public class ProductBean{
         }
 
         Product product = convertToProduct(productView);
-        return convertToView(productsRepo.save(product));
+        return convertToView(productsRepo.saveAndFlush(product));
     }
 
     private static List<ProductView> convertListToView(Iterable<Product> found) {
@@ -110,6 +110,7 @@ public class ProductBean{
         view.setId(found.getId());
         view.setEnabled(found.isEnabled());
         view.setName(found.getName());
+        view.setActive(found.getActive());
         view.setAvailableNumber(found.getQuantity());
         view.setCategory(found.getCategory().toString());
         view.setQuantity(found.getQuantity());
@@ -123,6 +124,7 @@ public class ProductBean{
         Product product = new Product();
         product.setId(productView.getId());
         product.setName(productView.getName());
+        product.setActive(productView.getActive());
         product.setQuantity(productView.getQuantity());
         product.setQuantity(productView.getAvailableNumber());
         product.setCategory(Product.ProductCategory.valueOf(productView.getCategory()));

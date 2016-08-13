@@ -26,7 +26,10 @@ public class Payment {
     @Enumerated(EnumType.STRING)
     private PaymentSource paymentSource;
 
+    //идентификатор заказа к которому прикреплён платёж, который пришёл из платёжной системы
     private String label;
+
+    private String comment;
 
     //дата создания записи в БД
     @Column(name = Constants.CREATED_AT, nullable = false)
@@ -44,15 +47,17 @@ public class Payment {
     @Column(name = "withdraw_amount", scale = 2)
     private BigDecimal withdrawAmount;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "number_for_customer")
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "payment")
     private Order order;
 
     @PrePersist
-    void setCreated() {
-        this.createdAt = Timestamp.from(Instant.now());
-        if (this.madeAt == null) {
-            this.madeAt = this.createdAt;
+    void prePersist() {
+        setCreatedAt(Timestamp.from(Instant.now()));
+        if (getMadeAt() == null) {
+            setMadeAt(getCreatedAt());
+        }
+        if (getCurrency() == null) {
+            setCurrency(Currency.RUR);
         }
     }
 
@@ -134,6 +139,14 @@ public class Payment {
 
     public void setOrder(Order order) {
         this.order = order;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
 

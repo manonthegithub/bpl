@@ -18,6 +18,9 @@
     "totalAmount": {
       "type": "string"
     },
+    "trackingNumber": {
+      "type": "string"
+    },
     "paymentInfo": {
       "type": "object",
       "properties": {

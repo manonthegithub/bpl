@@ -25,7 +25,7 @@
 
     <bean id="bplDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
         <property name="driverClass" value="org.postgresql.Driver"/>
-        <property name="jdbcUrl" value="jdbc:postgresql://192.169.56.101:5432/tt"/>
+        <property name="jdbcUrl" value="jdbc:postgresql://192.169.56.101:5432/ttt"/>
         <property name="user" value="postgres"/>
         <property name="password" value="111111"/>
     </bean>
@@ -38,6 +38,8 @@
         <property name="entityManagerFactory" ref="myEmf"/>
     </bean>
     <tx:annotation-driven transaction-manager="myTxManager"/>
+
+    <context:property-placeholder location="classpath:app.properties"/>
 
     <jpa:repositories
             base-package="ru.bookpleasure.repos"

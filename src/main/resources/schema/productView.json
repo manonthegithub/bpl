@@ -31,6 +31,10 @@
     "enabled": {
       "type": "boolean"
     },
+    "active": {
+      "default": true,
+      "type": "boolean"
+    },
     "base64ImageFile":{
       "type": "string"
     }

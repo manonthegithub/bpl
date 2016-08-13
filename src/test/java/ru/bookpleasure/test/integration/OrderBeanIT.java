@@ -16,7 +16,7 @@ public class OrderBeanIT extends AbstractSpringTest {
 
     @Test
     public void test() {
-        OrderBean orderBea = orderBean;
+        OrderBean ob = orderBean;
     }
 
 }
