@@ -40,6 +40,19 @@ public class OrderBean {
         return orderToOrderView(order);
     }
 
+    public Collection<OrderView> getListOfOrders() {
+        Collection<Order> orders = ordersRepo.findAll();
+        Collection<OrderView> views = new ArrayList<OrderView>();
+        for (Order order : orders) {
+            views.add(orderToOrderView(order));
+        }
+        return views;
+    }
+
+    public OrderView getOrderByNumberAndEmail(String orderNumber, String email) {
+        return orderToOrderView(ordersRepo.findByNumberForCustomerAndEmail(Long.valueOf(orderNumber), email));
+    }
+
     private Order orderViewToOrder(OrderView orderView) {
         Order order;
         if (orderView.getId() != null) {

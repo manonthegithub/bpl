@@ -29,10 +29,6 @@ public class Root {
     @Autowired
     OrderBean ob;
 
-    @Lazy
-    @Autowired
-    PaymentRequestDetailsRepo paymentRequestDetailsRepo;
-
     @Value("${notificationSecret}")
     private String secret;
 
@@ -67,6 +63,19 @@ public class Root {
                 Optional.<Sort>empty()
         );
         return result;
+    }
+
+    @GetMapping(
+            value = "/order/{id}",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+
+    @ResponseBody
+    public OrderView trackOrderDetails(
+            @PathVariable("id") String orderId,
+            @RequestParam("email") String email
+    ) {
+        return ob.getOrderByNumberAndEmail(orderId, email);
     }
 
     @PostMapping(
@@ -125,7 +134,6 @@ public class Root {
 
 
     private void checkSha1Hash(MultiValueMap<String, String> paymentForm) {
-        StringBuilder sb = new StringBuilder();
         List<String> params = Arrays.asList(
                 "notification_type",
                 "operation_id",
@@ -155,8 +163,5 @@ public class Root {
         }
 
     }
-
-
-
 
 }

@@ -7,9 +7,12 @@ import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import ru.bookpleasure.beans.OrderBean;
 import ru.bookpleasure.beans.ProductBean;
+import ru.bookpleasure.models.OrderView;
 import ru.bookpleasure.models.ProductView;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,10 +27,17 @@ public class Admin {
     @Lazy
     ProductBean pb;
 
-    @GetMapping()
+    @Autowired
+    @Lazy
+    OrderBean ob;
+
+    @GetMapping(
+            value = "orders",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @ResponseBody
-    public String listOrders() throws Exception {
-        return "ADMIN Ok";
+    public Collection<OrderView> listOrders() throws Exception {
+        return ob.getListOfOrders();
     }
 
     @DeleteMapping(value = "/products/{id}")
@@ -45,7 +55,6 @@ public class Admin {
     public ProductView saveProduct(@RequestBody ProductView productView) throws IOException {
         return pb.saveProduct(productView);
     }
-
 
     @GetMapping(
             value = "/products",
