@@ -10,11 +10,11 @@
               minPoolSize="2"
               acquireIncrement="1"
               name="jdbc/data"
-              user="postgres"
-              password="111111"
+              user="${db.user}"
+              password="${db.pass}"
               factory="org.apache.naming.factory.BeanFactory"
               type="com.mchange.v2.c3p0.ComboPooledDataSource"
-              jdbcUrl="jdbc:postgresql://192.169.56.101:5432/t"/>
+              jdbcUrl="jdbc:postgresql://${db.host}:${db.port}/${db.name}"/>
 
     <Realm className="org.apache.catalina.realm.DataSourceRealm"
            userTable="APPUSERS"

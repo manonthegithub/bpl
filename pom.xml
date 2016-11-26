@@ -7,6 +7,22 @@
 	<version>1.0</version>
 	<name>bpl</name>
 
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>1.6</maven.compiler.source>
+		<maven.compiler.target>1.6</maven.compiler.target>
+		<spring.version>4.3.0.RELEASE</spring.version>
+		<hibernate.version>5.1.0.Final</hibernate.version>
+
+		<yndx.secret>secret</yndx.secret>
+
+		<db.name>sdcsdc</db.name>
+		<db.host>scdscd</db.host>
+		<db.port>123</db.port>
+		<db.user>ssdcsdc</db.user>
+		<db.pass>sscdc</db.pass>
+	</properties>
+
 	<repositories>
 		<repository>
 			<id>eap</id>
@@ -31,17 +47,6 @@
 			</snapshots>
 		</pluginRepository>
 	</pluginRepositories>
-
-
-    <properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.source>1.6</maven.compiler.source>
-		<maven.compiler.target>1.6</maven.compiler.target>
-        <spring.version>4.3.0.RELEASE</spring.version>
-        <hibernate.version>5.1.0.Final</hibernate.version>
-
-        <yndx.secret>secret</yndx.secret>
-	</properties>
 
 
     <dependencies>
@@ -211,7 +216,17 @@
             <plugin>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>2.1.1</version>
-                <configuration>
+				<configuration>
+					<webResources>
+						<resource>
+							<filtering>true</filtering>
+							<directory>src/main/webapp</directory>
+							<includes>
+								<include>**/META-INF/context.xml</include>
+							</includes>
+						</resource>
+					</webResources>
+					<warSourceDirectory>src/main/webapp</warSourceDirectory>
                     <warName>ROOT</warName>
                 </configuration>
             </plugin>
@@ -242,24 +257,24 @@
 				</executions>
 			</plugin>
 		</plugins>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-            </resource>
-        </resources>
-		<testResources>
-			<testResource>
-				<directory>src/test/resources</directory>
-				<filtering>true</filtering>
-			</testResource>
-			<testResource>
-				<directory>src/main/resources</directory>
-				<includes>
-					<include>DozerMappings.xml</include>
-				</includes>
-			</testResource>
-		</testResources>
+		<!--<resources>-->
+		<!--<resource>-->
+		<!--<directory>src/main/resources</directory>-->
+		<!--<filtering>true</filtering>-->
+		<!--</resource>-->
+		<!--</resources>-->
+		<!--<testResources>-->
+		<!--<testResource>-->
+		<!--<directory>src/test/resources</directory>-->
+		<!--<filtering>true</filtering>-->
+		<!--</testResource>-->
+		<!--<testResource>-->
+		<!--<directory>src/main/resources</directory>-->
+		<!--<includes>-->
+		<!--<include>DozerMappings.xml</include>-->
+		<!--</includes>-->
+		<!--</testResource>-->
+		<!--</testResources>-->
 	</build>
 
 
