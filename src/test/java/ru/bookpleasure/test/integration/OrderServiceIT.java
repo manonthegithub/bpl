@@ -56,6 +56,9 @@ public class OrderServiceIT extends AbstractSpringTest {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
     }
 
+    /**
+     * Тестируем создание корзины с одним продуктом - боксом
+     */
     @Test
     public void newBasketWithOneProduct() throws Exception {
         int quantity = TOTAL_QUANTITY - 10;
@@ -81,6 +84,9 @@ public class OrderServiceIT extends AbstractSpringTest {
         checkCorrectnessOfOrderEntity(order);
     }
 
+    /**
+     * Заказ бокса, клик на "Заказать"
+     */
     @Test
     public void newBookBoxOrderProduct() throws Exception {
         Order order = newBookBoxOrder();
@@ -90,6 +96,9 @@ public class OrderServiceIT extends AbstractSpringTest {
         checkCorrectnessOfOrderEntity(order);
     }
 
+    /**
+     * Оплата бокса
+     */
     @Test
     public void paymentNotificationTest() throws Exception {
         Order order = newBookBoxOrder();
@@ -102,6 +111,9 @@ public class OrderServiceIT extends AbstractSpringTest {
     }
 
 
+    /**
+     * Редактирование деталей заказа, изменение статуса
+     */
     @Test(dataProvider = "statuses")
     public void editOrderTest(Order.Status status) throws Exception {
         Order order = newBookBoxOrder();

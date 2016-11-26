@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+
+    <mapping>
+        <class-a>ru.bookpleasure.models.PaymentInfo</class-a>
+        <class-b>ru.bookpleasure.db.entities.Payment</class-b>
+        <field custom-converter="ru.bookpleasure.mapping.CurrencyConverter">
+            <a>currency</a>
+            <b>currency</b>
+        </field>
+        <field custom-converter="ru.bookpleasure.mapping.XSDDateTimeConverter">
+            <a>datetime</a>
+            <b>madeAt</b>
+        </field>
+    </mapping>
+
+</mappings>

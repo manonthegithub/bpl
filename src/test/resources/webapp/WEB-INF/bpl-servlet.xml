@@ -60,4 +60,12 @@
         </mvc:argument-resolvers>
     </mvc:annotation-driven>
 
+
+    <!--Dozer configuration-->
+    <bean id="dozerMapperFactory" class="org.dozer.spring.DozerBeanMapperFactoryBean">
+        <property name="mappingFiles"
+                  value="classpath:DozerMappings.xml"/>
+    </bean>
+    <!--Dozer configuration-->
+
 </beans>

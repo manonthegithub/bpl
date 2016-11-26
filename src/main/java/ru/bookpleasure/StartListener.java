@@ -19,6 +19,9 @@ public class StartListener implements ApplicationListener<ContextRefreshedEvent>
     @Autowired
     FilesBean filesBean;
 
+    /**
+     * Загружаем файлы картинок из базы на старте
+     */
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         filesBean.loadFilesFromDbAfterDeploy();

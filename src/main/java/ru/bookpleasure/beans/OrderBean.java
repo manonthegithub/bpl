@@ -1,5 +1,6 @@
 package ru.bookpleasure.beans;
 
+import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -27,12 +28,21 @@ import static ru.bookpleasure.repos.specs.ProductsSpecs.hasId;
 public class OrderBean {
 
     @Autowired
+    Mapper mapper;
+
+    @Autowired
     OrdersRepo ordersRepo;
 
     @Autowired
     ProductsRepo productsRepo;
 
 
+    /**
+     * Создаём новый заказ, если такого заказа не было, если был - обновляем
+     *
+     * @param orderView модель заказа
+     * @return модель заказа
+     */
     @Transactional(rollbackFor = Throwable.class)
     public OrderView createOrUpdateOrder(OrderView orderView) {
         Order order = orderViewToOrder(orderView);
@@ -40,6 +50,13 @@ public class OrderBean {
         return orderToOrderView(order);
     }
 
+    /**
+     * Cписок заказов
+     * todo сделать пагинацию
+     *
+     * @return список заказов
+     */
+    @Transactional
     public Collection<OrderView> getListOfOrders() {
         Collection<Order> orders = ordersRepo.findAll();
         Collection<OrderView> views = new ArrayList<OrderView>();
@@ -49,8 +66,16 @@ public class OrderBean {
         return views;
     }
 
+    /**
+     * Для отслеживания клиент может найти свой заказ по email и номеру
+     *
+     * @param orderNumber номер заказа
+     * @param email       адрес почты
+     * @return информация о заказе
+     */
+    @Transactional
     public OrderView getOrderByNumberAndEmail(String orderNumber, String email) {
-        return orderToOrderView(ordersRepo.findByNumberForCustomerAndEmail(Long.valueOf(orderNumber), email));
+        return orderToOrderView(ordersRepo.findByNumberForCustomerAndCustomerDetailsEmail(Long.valueOf(orderNumber), email));
     }
 
     private Order orderViewToOrder(OrderView orderView) {
@@ -115,28 +140,16 @@ public class OrderBean {
         result.withId(order.getNumberForCustomer().toString())
                 .withTotalAmount(order.getTotalAmount().toPlainString())
                 .withIsBasket(order.getStatus() == Order.Status.EDITING)
-                .withStatus(order.getStatus().readableValue())
+                .withStatus(order.getStatus().toString())
+                .withStatusText(order.getStatus().readableValue())
                 .withTrackingNumber(order.getTrackingNumber());
 
         if (order.getAddress() != null) {
-            AddressInfo address = new AddressInfo();
-            address.withBuilding(order.getAddress().getBuilding())
-                    .withCity(order.getAddress().getCity())
-                    .withFlat(order.getAddress().getFlat())
-                    .withStreet(order.getAddress().getStreet())
-                    .withSuite(order.getAddress().getSuite())
-                    .withZip(order.getAddress().getSuite());
-            result.withAddressInfo(address);
+            result.withAddressInfo(mapper.map(order.getAddress(),AddressInfo.class));
         }
 
         if (order.getCustomerDetails() != null) {
-            CustomerDetailsInfo customerDetails = new CustomerDetailsInfo();
-            customerDetails.withFirstname(order.getCustomerDetails().getFirstname())
-                    .withLastname(order.getCustomerDetails().getLastname())
-                    .withMiddlename(order.getCustomerDetails().getMiddlename())
-                    .withEmail(order.getCustomerDetails().getEmail())
-                    .withPhone(order.getCustomerDetails().getPhone());
-            result.withCustomerDetailsInfo(customerDetails);
+            result.withCustomerDetailsInfo(mapper.map(order.getCustomerDetails(), CustomerDetailsInfo.class));
         }
 
         if (order.getProducts() != null && !order.getProducts().isEmpty()) {
@@ -163,24 +176,11 @@ public class OrderBean {
     }
 
     private Address addressFromAddressInfo(AddressInfo info) {
-        Address address = new Address();
-        address.setBuilding(info.getBuilding());
-        address.setCity(info.getCity());
-        address.setFlat(info.getFlat());
-        address.setStreet(info.getStreet());
-        address.setSuite(info.getSuite());
-        address.setZip(info.getZip());
-        return address;
+        return mapper.map(info, Address.class);
     }
 
     private CustomerDetails customerDetailsFromCustomerDetailsInfo(CustomerDetailsInfo info) {
-        CustomerDetails customerDetails = new CustomerDetails();
-        customerDetails.setEmail(info.getEmail());
-        customerDetails.setPhone(info.getPhone());
-        customerDetails.setFirstname(info.getFirstname());
-        customerDetails.setLastname(info.getLastname());
-        customerDetails.setMiddlename(info.getMiddlename());
-        return customerDetails;
+        return mapper.map(info, CustomerDetails.class);
     }
 
     private Order savePayment(Order order, PaymentInfo info) {

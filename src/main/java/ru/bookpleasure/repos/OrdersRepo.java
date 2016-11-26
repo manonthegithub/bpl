@@ -14,6 +14,6 @@ public interface OrdersRepo extends PagingAndSortingRepository<Order, UUID>, Jpa
 
     Order findByNumberForCustomer(Long orderNumber);
 
-    Order findByNumberForCustomerAndEmail(Long orderNumber, String email);
+    Order findByNumberForCustomerAndCustomerDetailsEmail(Long orderNumber, String email);
 
 }

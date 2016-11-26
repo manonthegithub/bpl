@@ -1,5 +1,7 @@
 package ru.bookpleasure.db.entities;
 
+import sun.util.resources.cldr.ebu.CurrencyNames_ebu;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -151,19 +153,33 @@ public class Payment {
 
 
     public enum Currency {
-        RUR;
+        RUR(643);
+
+        Currency(Integer code) {
+            this.code = code;
+        }
+
+        private final Integer code;
+
+        final public Integer getCode() {
+            return code;
+        }
+
+        public static Integer getCode(Currency curr) {
+            return curr.getCode();
+        }
 
         public static Currency getFromCode(String code) {
             return getFromCode(Integer.valueOf(code));
         }
 
         public static Currency getFromCode(Integer code) {
-            switch (code) {
-                case 643:
-                    return RUR;
-                default:
-                    throw new IllegalArgumentException("Валюта с таким кодом не поддерживается");
+            for (Currency curr : Currency.values()) {
+                if (code.equals(curr.getCode())) {
+                    return curr;
+                }
             }
+            throw new IllegalArgumentException("Введённый код валюты не поддерживается: " + code);
         }
     }
 

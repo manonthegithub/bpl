@@ -11,7 +11,6 @@ import ru.bookpleasure.beans.OrderBean;
 import ru.bookpleasure.beans.ProductBean;
 import ru.bookpleasure.db.entities.Product;
 import ru.bookpleasure.models.*;
-import ru.bookpleasure.repos.PaymentRequestDetailsRepo;
 
 import java.util.*;
 
@@ -39,6 +38,10 @@ public class Root {
         return "It works!";
     }
 
+
+    /**
+     * Contact us form
+     */
     @PostMapping(
             value = "contact",
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
@@ -52,12 +55,15 @@ public class Root {
     }
 
 
+    /**
+     * List of boxes
+     */
     @GetMapping(
             value = "/boxes",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ResponseBody
-    public List<ProductView> listEnabledProducts(){
+    public List<ProductView> listBoxes() {
         List<ProductView> result = pb.getEnabledProductByCategory(
                 Product.ProductCategory.BOOKBOX.toString(),
                 Optional.<Sort>empty()
@@ -65,11 +71,13 @@ public class Root {
         return result;
     }
 
+    /**
+     * get order by Id and email
+     */
     @GetMapping(
             value = "/order/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-
     @ResponseBody
     public OrderView trackOrderDetails(
             @PathVariable("id") String orderId,
