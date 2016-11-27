@@ -52,44 +52,5 @@
         </plugins>
     </build>
 
-    <profiles>
-        <profile>
-            <id>embedded</id>
-            <build>
-                <finalName>embeddedTomcat</finalName>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>appassembler-maven-plugin</artifactId>
-                        <configuration>
-                            <assembleDirectory>target</assembleDirectory>
-                            <programs>
-                                <program>
-                                    <mainClass>ru.bookpleasure.launch.Main</mainClass>
-                                    <name>webapp</name>
-                                </program>
-                            </programs>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>assemble</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-            <dependencies>
-                <dependency>
-                    <groupId>${project.parent.groupId}</groupId>
-                    <artifactId>embedded</artifactId>
-                    <version>${project.parent.version}</version>
-                </dependency>
-            </dependencies>
-        </profile>
-    </profiles>
-
 
 </project>
