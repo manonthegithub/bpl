@@ -1,1 +1,1 @@
-web: sh target/bin/webapp
+web: sh web/target/bin/webapp
