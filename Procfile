@@ -1,1 +1,1 @@
-web: sh embedded/target/
+web: sh embedded/target/bin/webapp
