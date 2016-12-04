@@ -1,1 +1,1 @@
-web: java $JAVA_OPTS -jar target/webapp-runner.jar --port $PORT target/webapps/*.war
+web: java $JAVA_OPTS -jar embedded/target/webapp-runner.jar --port $PORT embedded/target/webapps/*.war
