@@ -127,6 +127,16 @@
     </dependencies>
 
     <build>
+        <resources>
+            <resource>
+                <directory>${project.basedir}/src/main/resources</directory>
+            </resource>
+            <resource>
+                <directory>${project.basedir}/src/main/filtered-resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+
         <plugins>
             <plugin>
                 <groupId>org.jsonschema2pojo</groupId>
@@ -156,6 +166,9 @@
                             <directory>src/main/webapp</directory>
                             <includes>
                                 <include>**/META-INF/context.xml</include>
+                            </includes>
+                            <includes>
+                                <include>**/WEB-INF/bpl-servlet.xml</include>
                             </includes>
                         </resource>
                     </webResources>

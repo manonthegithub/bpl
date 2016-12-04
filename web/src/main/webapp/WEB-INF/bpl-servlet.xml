@@ -37,8 +37,28 @@
 
 
     <!--JPA configuration-->
-    <jee:jndi-lookup id="bplDataSource" jndi-name="java:comp/env/jdbc/data"/>
-    <bean id="myEmf" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+
+
+    <!--<jee:jndi-lookup id="bplDataSource" jndi-name="java:comp/env/jdbc/data"/>-->
+
+
+    <bean id="bplDataSource"
+          class="com.mchange.v2.c3p0.ComboPooledDataSource"
+          destroy-method="close">
+        <property name="driverClass" value="org.postgresql.Driver" />
+        <property name="jdbcUrl" value="jdbc:postgresql://${db.host}:${db.port}/${db.name}" />
+        <property name="user" value="${db.user}" />
+        <property name="password" value="${db.pass}" />
+
+        <property name="acquireIncrement" value="5" />
+        <property name="minPoolSize" value="0" />
+        <property name="maxPoolSize" value="10" />
+        <property name="maxIdleTime" value="300" />
+    </bean>
+
+
+
+<bean id="myEmf" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="dataSource" ref="bplDataSource"/>
     </bean>
 

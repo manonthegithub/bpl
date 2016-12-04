@@ -24,11 +24,12 @@
 
 
 		<yndx.secret>secret</yndx.secret>
-		<db.name>sdcsdc</db.name>
-		<db.host>scdscd</db.host>
-		<db.port>123</db.port>
-		<db.user>ssdcsdc</db.user>
-		<db.pass>sscdc</db.pass>
+
+		<db.name>t</db.name>
+		<db.host>192.169.56.101</db.host>
+		<db.port>5432</db.port>
+		<db.user>postgres</db.user>
+		<db.pass>111111</db.pass>
 	</properties>
 
 	<!--<repositories>
