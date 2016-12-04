@@ -15,7 +15,7 @@ public class Main {
 
         String rootPath = new File(".").getCanonicalPath();
 
-        System.out.println(rootPath);
+        System.out.println("Bookpleasure app root: " + rootPath);
 
 
         String catalinaHome = "..";
