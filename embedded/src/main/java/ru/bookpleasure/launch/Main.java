@@ -18,7 +18,7 @@ public class Main {
         System.out.println("Bookpleasure app root: " + rootPath);
 
 
-        String catalinaHome = "..";
+        String catalinaHome = "embedded/target/";
 
         Tomcat tomcat = new Tomcat();
 
