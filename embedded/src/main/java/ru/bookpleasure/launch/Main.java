@@ -13,6 +13,11 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
+        String rootPath = new File(".").getCanonicalPath();
+
+        System.out.println(rootPath);
+
+
         String catalinaHome = "..";
 
         Tomcat tomcat = new Tomcat();
