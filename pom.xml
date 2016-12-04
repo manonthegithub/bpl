@@ -25,11 +25,11 @@
 
 		<yndx.secret>secret</yndx.secret>
 
-		<db.name>t</db.name>
-		<db.host>192.169.56.101</db.host>
+		<db.name>da9jjh3o4ssl1v</db.name>
+		<db.host>ec2-54-217-213-203.eu-west-1.compute.amazonaws.com</db.host>
 		<db.port>5432</db.port>
-		<db.user>postgres</db.user>
-		<db.pass>111111</db.pass>
+		<db.user>nicqtzcnsczupl</db.user>
+		<db.pass>T8v49OAXt-DieN0jEBngFMOIRG</db.pass>
 	</properties>
 
 	<!--<repositories>
