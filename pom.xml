@@ -32,59 +32,7 @@
 		<db.pass>T8v49OAXt-DieN0jEBngFMOIRG</db.pass>
 	</properties>
 
-	<!--<repositories>
-		<repository>
-			<id>eap</id>
-			<url>http://maven.repository.redhat.com/techpreview/all</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-	</repositories>-->
-	<!--<pluginRepositories>-->
-	<!--<pluginRepository>-->
-	<!--<id>eap</id>-->
-	<!--<url>http://maven.repository.redhat.com/techpreview/all</url>-->
-	<!--<releases>-->
-	<!--<enabled>true</enabled>-->
-	<!--</releases>-->
-	<!--<snapshots>-->
-	<!--<enabled>true</enabled>-->
-	<!--</snapshots>-->
-	<!--</pluginRepository>-->
-	<!--</pluginRepositories>-->
-
-
-
 	<profiles>
-
-		<!--<profile>-->
-		<!--&lt;!&ndash; When built in OpenShift the 'openshift' profile will be used when -->
-		<!--invoking mvn. &ndash;&gt;-->
-		<!--&lt;!&ndash; Use this profile for any OpenShift specific customization your app -->
-		<!--will need. &ndash;&gt;-->
-		<!--&lt;!&ndash; By default that is to put the resulting archive into the 'webapps' -->
-		<!--folder. &ndash;&gt;-->
-		<!--&lt;!&ndash; http://maven.apache.org/guides/mini/guide-building-for-different-environments.html &ndash;&gt;-->
-		<!--<id>openshift</id>-->
-		<!--<build>-->
-		<!--<finalName>bpl</finalName>-->
-		<!--<plugins>-->
-		<!--<plugin>-->
-		<!--<artifactId>maven-war-plugin</artifactId>-->
-		<!--<version>2.1.1</version>-->
-		<!--<configuration>-->
-		<!--<outputDirectory>webapps</outputDirectory>-->
-		<!--<warName>ROOT</warName>-->
-		<!--</configuration>-->
-		<!--</plugin>-->
-		<!--</plugins>-->
-
-		<!--</build>-->
-		<!--</profile>-->
         <profile>
             <id>tomcat-local-deploy</id>
             <build>
@@ -115,8 +63,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
                 <version>3.5.1</version>
 				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
+					<source>1.8</source>
+					<target>1.8</target>
 				</configuration>
 			</plugin>
 
