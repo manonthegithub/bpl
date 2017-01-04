@@ -25,6 +25,9 @@
 
 		<yndx.secret>secret</yndx.secret>
 
+		<admin.username>bpladmin</admin.username>
+		<admin.pass>papass</admin.pass>
+
 		<db.name>da9jjh3o4ssl1v</db.name>
 		<db.host>ec2-54-217-213-203.eu-west-1.compute.amazonaws.com</db.host>
 		<db.port>5432</db.port>
@@ -49,7 +52,7 @@
                             <username>role1</username>
                             <password>tomcat</password>
                             <path>/</path>
-							<warFile>web/target/ROOT.war</warFile>
+							<warFile>target/ROOT.war</warFile>
                         </configuration>
                     </plugin>
                 </plugins>

@@ -19,23 +19,6 @@
         <url-pattern>/api/*</url-pattern>
     </servlet-mapping>
 
-    <security-constraint>
-        <web-resource-collection>
-            <web-resource-name>Admin pages</web-resource-name>
-            <url-pattern>/api/adm/*</url-pattern>
-            <http-method>GET</http-method>
-            <http-method>POST</http-method>
-        </web-resource-collection>
-        <auth-constraint>
-            <role-name>bpladmin</role-name>
-        </auth-constraint>
-
-        <user-data-constraint>
-            <!-- transport-guarantee can be CONFIDENTIAL, INTEGRAL, or NONE -->
-            <transport-guarantee>NONE</transport-guarantee>
-        </user-data-constraint>
-    </security-constraint>
-
     <login-config>
         <auth-method>BASIC</auth-method>
     </login-config>
@@ -43,5 +26,15 @@
     <listener>
         <listener-class>ru.bookpleasure.StartListener</listener-class>
     </listener>
+
+    <filter>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <url-pattern>/api/adm/*</url-pattern>
+    </filter-mapping>
+
 
 </web-app>

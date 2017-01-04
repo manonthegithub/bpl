@@ -32,6 +32,13 @@ public class Admin {
     OrderBean ob;
 
     @GetMapping(
+            produces = MediaType.TEXT_PLAIN_VALUE)
+    @ResponseBody
+    public String hello() {
+        return "Secure. It works!";
+    }
+
+    @GetMapping(
             value = "orders",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
