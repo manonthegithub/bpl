@@ -7,8 +7,8 @@
 	<version>1.0</version>
 
 	<modules>
-		<module>embedded</module>
 		<module>web</module>
+		<module>embedded</module>
 	</modules>
 	<name>bpl</name>
 
