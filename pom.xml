@@ -23,7 +23,7 @@
 		<hibernate.version>5.1.0.Final</hibernate.version>
 
 
-		<yndx.secret>secret</yndx.secret>
+		<yndx.secret>${env.YNDX_SECRET}</yndx.secret>
 
 		<admin.username>bpladmin</admin.username>
 		<admin.pass>papass</admin.pass>
