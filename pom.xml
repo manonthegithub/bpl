@@ -28,11 +28,11 @@
 		<admin.username>bpladmin</admin.username>
 		<admin.pass>papass</admin.pass>
 
-		<db.name>da9jjh3o4ssl1v</db.name>
-		<db.host>ec2-54-217-213-203.eu-west-1.compute.amazonaws.com</db.host>
+		<db.name>db</db.name>
+		<db.host>host</db.host>
 		<db.port>5432</db.port>
-		<db.user>nicqtzcnsczupl</db.user>
-		<db.pass>T8v49OAXt-DieN0jEBngFMOIRG</db.pass>
+		<db.user>user</db.user>
+		<db.pass>pass</db.pass>
 	</properties>
 
 	<profiles>
