@@ -28,11 +28,11 @@
 		<admin.username>bpladmin</admin.username>
 		<admin.pass>papass</admin.pass>
 
-		<db.name>db</db.name>
-		<db.host>host</db.host>
-		<db.port>5432</db.port>
-		<db.user>user</db.user>
-		<db.pass>pass</db.pass>
+		<db.name>${env.db.name}</db.name>
+		<db.host>${env.db.host}</db.host>
+		<db.port>${env.db.port}</db.port>
+		<db.user>${env.db.user}</db.user>
+		<db.pass>${env.db.pass}</db.pass>
 	</properties>
 
 	<profiles>
