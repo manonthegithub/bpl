@@ -1,4 +1,4 @@
-package ru.bookpleasure;
+package ru.bookpleasure.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -7,6 +7,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
+import ru.bookpleasure.MailAgent;
 import ru.bookpleasure.beans.OrderBean;
 import ru.bookpleasure.beans.ProductBean;
 import ru.bookpleasure.db.entities.Product;
@@ -17,7 +18,7 @@ import java.util.*;
 import static ru.bookpleasure.Utils.sha1HashFromParams;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("${basePath}")
 public class Root {
 
     @Lazy

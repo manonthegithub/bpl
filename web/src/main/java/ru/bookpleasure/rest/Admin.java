@@ -1,4 +1,4 @@
-package ru.bookpleasure;
+package ru.bookpleasure.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -20,7 +20,7 @@ import java.util.UUID;
  * Created by Kirill on 30/05/16.
  */
 @RestController
-@RequestMapping("/adm")
+@RequestMapping("${adminPath}")
 public class Admin {
 
     @Autowired

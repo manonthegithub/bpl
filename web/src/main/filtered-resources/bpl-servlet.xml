@@ -20,7 +20,7 @@
 
 
     <!--Application context configuration-->
-    <import resource="security.xml"/>
+    <import resource="classpath:security.xml"/>
 
     <context:component-scan base-package="ru.bookpleasure"/>
 
@@ -41,9 +41,9 @@
           class="com.mchange.v2.c3p0.ComboPooledDataSource"
           destroy-method="close">
         <property name="driverClass" value="org.postgresql.Driver"/>
-        <property name="jdbcUrl" value="jdbc:postgresql://${db.host}:${db.port}/${db.name}"/>
-        <property name="user" value="${db.user}"/>
-        <property name="password" value="${db.pass}"/>
+        <property name="jdbcUrl" value="jdbc:postgresql://@db.host@:@db.port@/@db.name@"/>
+        <property name="user" value="@db.user@"/>
+        <property name="password" value="@db.pass@"/>
 
         <property name="acquireIncrement" value="5"/>
         <property name="minPoolSize" value="0"/>
