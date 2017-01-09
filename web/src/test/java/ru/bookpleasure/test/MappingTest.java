@@ -18,7 +18,7 @@ import static org.testng.Assert.assertEquals;
 /**
  * Created by Kirill on 06/11/16.
  */
-public class MappingTests extends AbstractSpringTest {
+public class MappingTest extends AbstractSpringTest {
 
     @Autowired
     Mapper mapper;

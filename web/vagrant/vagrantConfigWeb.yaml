@@ -1,0 +1,2 @@
+postgres_port: ${db.port}
+postgres_pass: '${db.pass}'

@@ -30,7 +30,7 @@ import static ru.bookpleasure.Utils.sha1HashFromParams;
 /**
  * Created by Kirill on 12/07/16.
  */
-public class OrderServiceIT extends AbstractSpringTest {
+public class OrderServiceIntTest extends AbstractSpringTest {
 
     private final ObjectMapper MAPPER = new ObjectMapper();
 
@@ -42,6 +42,9 @@ public class OrderServiceIT extends AbstractSpringTest {
 
     @Value("${notificationSecret}")
     private String secret;
+
+    @Value("${basePath}")
+    private String basePath;
 
     @Autowired
     private WebApplicationContext wac;
@@ -128,7 +131,7 @@ public class OrderServiceIT extends AbstractSpringTest {
                 "}";
         OrderView orderView = sendOrderRequestAndGetResponse(sample);
 
-        assertEquals(orderView.getStatus(), status.readableValue());
+        assertEquals(orderView.getStatusText(), status.readableValue());
         assertEquals(order.getStatus(), status);
     }
 
@@ -230,7 +233,7 @@ public class OrderServiceIT extends AbstractSpringTest {
     }
 
     private String sendPostRequestAndGetStringResponse(String path, String body, MediaType type) throws Exception {
-        MvcResult requestResult = this.mockMvc.perform(post(path)
+        MvcResult requestResult = this.mockMvc.perform(post(basePath + path)
                 .contentType(type)
                 .content(body))
                 .andExpect(status().isOk())

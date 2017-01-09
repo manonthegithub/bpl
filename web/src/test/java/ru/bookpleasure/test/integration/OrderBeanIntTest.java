@@ -10,7 +10,7 @@ import ru.bookpleasure.beans.OrderBean;
 /**
  * Created by Kirill on 11/07/16.
  */
-public class OrderBeanIT extends AbstractSpringTest {
+public class OrderBeanIntTest extends AbstractSpringTest {
 
     @Autowired
     OrderBean orderBean;

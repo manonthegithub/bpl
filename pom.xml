@@ -58,6 +58,19 @@
                 </plugins>
             </build>
         </profile>
+
+
+		<profile>
+			<id>local-test-db</id>
+			<properties>
+				<yndx.secret>secret</yndx.secret>
+				<db.name>postgres</db.name>
+				<db.host>localhost</db.host>
+				<db.port>65432</db.port>
+				<db.user>postgres</db.user>
+				<db.pass>password</db.pass>
+			</properties>
+		</profile>
 	</profiles>
 
 	<build>
