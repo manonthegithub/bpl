@@ -10,6 +10,6 @@ import org.springframework.test.context.web.WebAppConfiguration;
  */
 @ContextConfiguration("/webapp/WEB-INF/bpl-servlet.xml")
 @WebAppConfiguration
-public abstract class AbstractSpringTest extends AbstractTransactionalTestNGSpringContextTests {
+abstract class AbstractSpringIT extends AbstractTransactionalTestNGSpringContextTests {
 
 }

@@ -1,16 +1,11 @@
-package ru.bookpleasure.test;
+package ru.bookpleasure.test.unit;
 
-import org.apache.commons.beanutils.converters.DateTimeConverter;
 import org.dozer.Mapper;
-import org.dozer.spring.DozerBeanMapperFactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.annotations.Test;
 import ru.bookpleasure.db.entities.Payment;
 import ru.bookpleasure.models.PaymentInfo;
-import ru.bookpleasure.test.integration.AbstractSpringTest;
-
 import javax.xml.bind.DatatypeConverter;
-import java.sql.Time;
 import java.sql.Timestamp;
 
 import static org.testng.Assert.assertEquals;
@@ -18,7 +13,7 @@ import static org.testng.Assert.assertEquals;
 /**
  * Created by Kirill on 06/11/16.
  */
-public class MappingTest extends AbstractSpringTest {
+public class MappingTest extends AbstractSpringUnitTest {
 
     @Autowired
     Mapper mapper;

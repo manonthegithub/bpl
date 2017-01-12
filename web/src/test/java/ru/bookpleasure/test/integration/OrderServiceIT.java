@@ -30,7 +30,7 @@ import static ru.bookpleasure.Utils.sha1HashFromParams;
 /**
  * Created by Kirill on 12/07/16.
  */
-public class OrderServiceIntTest extends AbstractSpringTest {
+public class OrderServiceIT extends AbstractSpringIT {
 
     private final ObjectMapper MAPPER = new ObjectMapper();
 

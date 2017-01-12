@@ -1,4 +1,4 @@
-package ru.bookpleasure.test;
+package ru.bookpleasure.test.unit;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.testng.annotations.Test;

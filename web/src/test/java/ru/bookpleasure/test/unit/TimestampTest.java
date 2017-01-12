@@ -1,12 +1,10 @@
-package ru.bookpleasure.test;
+package ru.bookpleasure.test.unit;
 
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import javax.xml.bind.DatatypeConverter;
-import java.sql.Date;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 
 /**
  * Created by Kirill on 10/07/16.
