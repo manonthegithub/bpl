@@ -1,14 +1,13 @@
-package ru.bookpleasure.test.unit;
+package ru.bookpleasure.test.integration;
 
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 /**
- * Created by Kirill on 11/01/17.
+ * Created by Kirill on 15/01/17.
  */
 @ContextConfiguration("/webapp/WEB-INF/bpl-servlet.xml")
 @WebAppConfiguration
-abstract class AbstractSpringUnitTest extends AbstractTestNGSpringContextTests {
-
+abstract class AbstractNoTransactionSpringIT extends AbstractTestNGSpringContextTests {
 }

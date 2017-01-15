@@ -27,6 +27,25 @@
     <context:property-placeholder location="classpath:app.properties"/>
     <!--Application context configuration-->
 
+    <!-- JAVA MAIL-->
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="@mail.host@"/>
+        <property name="port" value="@mail.port@"/>
+        <property name="username" value="@mail.robot.username@"/>
+        <property name="password" value="@mail.robot.pass@"/>
+        <property name="javaMailProperties">
+            <props>
+                <prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>
+                <prop key="mail.smtp.socketFactory.port">@mail.port@</prop>
+                <prop key="mail.smtp.auth">true</prop>
+                <prop key="mail.smtp.starttls.enable">true</prop>
+                <prop key="mail.smtp.debug">true</prop>
+                <prop key="mail.smtp.timeout">5000</prop>
+                <prop key="mail.smtp.connectiontimeout">5000</prop>
+            </props>
+        </property>
+    </bean>
+    <!-- JAVA MAIL-->
 
     <!--Dozer configuration-->
     <bean id="dozerMapperFactory" class="org.dozer.spring.DozerBeanMapperFactoryBean">

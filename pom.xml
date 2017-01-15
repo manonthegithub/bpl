@@ -28,6 +28,11 @@
 		<admin.username>bpladmin</admin.username>
 		<admin.pass>papass</admin.pass>
 
+		<mail.host>${env.MAIL_HOST}</mail.host>
+		<mail.port>${env.MAIL_PORT}</mail.port>
+		<mail.robot.username>${env.MAIL_ROBOT_USERNAME}</mail.robot.username>
+		<mail.robot.pass>${env.MAIL_ROBOT_PASS}</mail.robot.pass>
+
 		<db.name>${env.DB_NAME}</db.name>
 		<db.host>${env.DB_HOST}</db.host>
 		<db.port>${env.DB_PORT}</db.port>
@@ -36,30 +41,6 @@
 	</properties>
 
 	<profiles>
-        <profile>
-            <id>tomcat-local-deploy</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.tomcat.maven</groupId>
-                        <artifactId>tomcat7-maven-plugin</artifactId>
-                        <version>2.2</version>
-                        <configuration>
-                            <url>http://localhost:8080/manager/text</url>
-                            <charset>UTF-8</charset>
-                            <mode>war</mode>
-                            <update>true</update>
-                            <username>role1</username>
-                            <password>tomcat</password>
-                            <path>/</path>
-							<warFile>target/ROOT.war</warFile>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
-
 		<profile>
 			<id>local-test-db</id>
 			<properties>

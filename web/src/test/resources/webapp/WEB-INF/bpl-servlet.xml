@@ -4,13 +4,10 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
        xmlns:tx="http://www.springframework.org/schema/tx"
-       xmlns:jee="http://www.springframework.org/schema/jee"
        xmlns:jpa="http://www.springframework.org/schema/data/jpa"
        xsi:schemaLocation="
         http://www.springframework.org/schema/data/jpa
         http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
-        http://www.springframework.org/schema/jee
-        http://www.springframework.org/schema/jee/spring-jee.xsd
         http://www.springframework.org/schema/tx
         http://www.springframework.org/schema/tx/spring-tx.xsd
         http://www.springframework.org/schema/mvc
@@ -35,6 +32,26 @@
                   value="classpath:DozerMappings.xml"/>
     </bean>
     <!--Dozer configuration-->
+
+    <!-- JAVA MAIL-->
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="@mail.host@"/>
+        <property name="port" value="@mail.port@"/>
+        <property name="username" value="@mail.robot.username@"/>
+        <property name="password" value="@mail.robot.pass@"/>
+        <property name="javaMailProperties">
+            <props>
+                <prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>
+                <prop key="mail.smtp.socketFactory.port">@mail.port@</prop>
+                <prop key="mail.smtp.auth">true</prop>
+                <prop key="mail.smtp.starttls.enable">true</prop>
+                <prop key="mail.smtp.debug">true</prop>
+                <prop key="mail.smtp.timeout">5000</prop>
+                <prop key="mail.smtp.connectiontimeout">5000</prop>
+            </props>
+        </property>
+    </bean>
+    <!-- JAVA MAIL-->
 
 
     <!--JPA configuration-->

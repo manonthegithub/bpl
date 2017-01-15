@@ -29,6 +29,10 @@ public class Root {
     @Autowired
     OrderBean ob;
 
+    @Lazy
+    @Autowired
+    MailAgent mailAgent;
+
     @Value("${notificationSecret}")
     private String secret;
 
@@ -52,7 +56,7 @@ public class Root {
             @RequestParam("email") String email,
             @RequestParam("message") String message) {
         String subj = "Сообщение от " + name + " - " + email;
-        MailAgent.sendMailFromRobot("info@bookpleasure.ru", subj, message);
+        mailAgent.sendMailFromRobot("info@bookpleasure.ru", subj, message);
     }
 
 
