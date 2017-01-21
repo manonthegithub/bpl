@@ -1,6 +1,7 @@
 package ru.bookpleasure.beans;
 
 import net.iharder.Base64;
+import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Sort;
@@ -16,19 +17,24 @@ import ru.bookpleasure.repos.ProductsRepo;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by Винда on 22.02.2016.
  */
 @Component
 @Lazy
-public class ProductBean{
+public class ProductService {
+
+
+    @Autowired
+    Mapper mapper;
 
     @Autowired
     ProductsRepo productsRepo;
 
     @Autowired
-    FilesBean filesBean;
+    FilesService filesService;
 
 
     public ProductView getProductById(UUID id){
@@ -39,8 +45,8 @@ public class ProductBean{
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Throwable.class)
     public void removeProduct(UUID id) {
         Product product = productsRepo.findOne(id);
-        List<ResourceFile> resourceFiles = filesBean.findByFilenamePrefix(product.getImageFilename());
-        filesBean.delete(resourceFiles);
+        List<ResourceFile> resourceFiles = filesService.findByFilenamePrefix(product.getImageFilename());
+        filesService.delete(resourceFiles);
         productsRepo.delete(product);
     }
 
@@ -56,15 +62,12 @@ public class ProductBean{
     }
 
     public List<ProductView> getAllProducts() {
-        Iterable<Product> products = productsRepo.findAll(new Sort(Sort.Direction.DESC, Product_.createdAt.getName()));
+        Collection<Product> products = productsRepo.findAll(new Sort(Sort.Direction.DESC, Product_.createdAt.getName()));
         return convertListToView(products);
     }
 
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Throwable.class)
     public ProductView saveProduct(ProductView productView) {
-        if (productView.getAvailableNumber() == null) {
-            productView.setAvailableNumber(productView.getQuantity());
-        }
         if (productView.getEnabled() == null) {
             productView.setEnabled(false);
         }
@@ -79,7 +82,7 @@ public class ProductBean{
 
             try {
                 byte[] fileBytes = Base64.decode(productView.getBase64ImageFile());
-                filesBean.save(fileName, fileBytes);
+                filesService.save(fileName, fileBytes);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -89,49 +92,25 @@ public class ProductBean{
         return convertToView(productsRepo.saveAndFlush(product));
     }
 
-    private static List<ProductView> convertListToView(Iterable<Product> found) {
-        List<ProductView> pv = new ArrayList<ProductView>();
-        for (Product p : found) {
-            pv.add(convertToView(p));
-        }
-        return pv;
+    private List<ProductView> convertListToView(Collection<Product> found) {
+        return found
+                .stream()
+                .map(this::convertToView)
+                .collect(Collectors.toList());
     }
 
-    private static List<Product> convertListToProduct(Iterable<ProductView> found) {
-        List<Product> p = new ArrayList<Product>();
-        for (ProductView pv : found) {
-            p.add(convertToProduct(pv));
-        }
-        return p;
+    private List<Product> convertListToProduct(Collection<ProductView> found) {
+        return found
+                .stream()
+                .map(this::convertToProduct)
+                .collect(Collectors.toList());
     }
 
-    private static ProductView convertToView(Product found) {
-        ProductView view = new ProductView();
-        view.setId(found.getId());
-        view.setEnabled(found.isEnabled());
-        view.setName(found.getName());
-        view.setActive(found.getActive());
-        view.setAvailableNumber(found.getQuantity());
-        view.setCategory(found.getCategory().toString());
-        view.setQuantity(found.getQuantity());
-        view.setDescription(found.getDescription());
-        view.setImageLink(found.getImageFilename());
-        view.setPrice(found.getPrice().intValue());
-        return view;
+    private ProductView convertToView(Product found) {
+        return mapper.map(found, ProductView.class);
     }
 
-    private static Product convertToProduct(ProductView productView) {
-        Product product = new Product();
-        product.setId(productView.getId());
-        product.setName(productView.getName());
-        product.setActive(productView.getActive());
-        product.setQuantity(productView.getQuantity());
-        product.setQuantity(productView.getAvailableNumber());
-        product.setCategory(Product.ProductCategory.valueOf(productView.getCategory()));
-        product.setDescription(productView.getDescription());
-        product.setImageFilename(productView.getImageLink());
-        product.setEnabled(productView.getEnabled());
-        product.setPrice(new BigDecimal(productView.getPrice()));
-        return product;
+    private Product convertToProduct(ProductView productView) {
+        return mapper.map(productView, Product.class);
     }
 }

@@ -17,4 +17,13 @@
         </field>
     </mapping>
 
+    <mapping>
+        <class-a>ru.bookpleasure.models.ProductView</class-a>
+        <class-b>ru.bookpleasure.db.entities.Product</class-b>
+        <field>
+            <a>imageLink</a>
+            <b>imageFilename</b>
+        </field>
+    </mapping>
+
 </mappings>

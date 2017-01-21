@@ -22,9 +22,6 @@
     "quantity": {
       "type": "integer"
     },
-    "availableNumber": {
-      "type": "integer"
-    },
     "price": {
       "type": "integer"
     },

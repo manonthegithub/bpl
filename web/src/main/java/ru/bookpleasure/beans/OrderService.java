@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import ru.bookpleasure.db.entities.*;
 import ru.bookpleasure.db.entities.Product;
+import ru.bookpleasure.db.entities.Shipment;
 import ru.bookpleasure.models.*;
 import ru.bookpleasure.repos.OrdersRepo;
 import ru.bookpleasure.repos.ProductsRepo;
@@ -25,7 +26,7 @@ import static ru.bookpleasure.repos.specs.ProductsSpecs.hasId;
  */
 @Component
 @Lazy
-public class OrderBean {
+public class OrderService {
 
     @Autowired
     Mapper mapper;
@@ -84,7 +85,9 @@ public class OrderBean {
             //существующий заказ
             order = ordersRepo.findByNumberForCustomer(Long.valueOf(orderView.getId()));
 
-            order.setTrackingNumber(orderView.getTrackingNumber());
+            if (orderView.getShipment() != null) {
+                order.setShipment(mapper.map(orderView.getShipment(), Shipment.class));
+            }
 
             if (orderView.getIsBasket() && order.getStatus() == Order.Status.EDITING) {
                 saveProducts(order, orderView.getProductInfos());
@@ -98,7 +101,7 @@ public class OrderBean {
             //новый заказ
             order = new Order();
 
-            if (orderView.getTrackingNumber() != null) {
+            if (orderView.getShipment() != null && orderView.getShipment().getTrackingNumber() != null) {
                 throw new IllegalArgumentException("Созданный заказ не может иметь трекномера");
             }
 
@@ -116,9 +119,6 @@ public class OrderBean {
 
         }
 
-        if (orderView.getAddressInfo() != null) {
-            order.setAddress(addressFromAddressInfo(orderView.getAddressInfo()));
-        }
         if (orderView.getCustomerDetailsInfo() != null) {
             order.setCustomerDetails(
                     customerDetailsFromCustomerDetailsInfo(orderView.getCustomerDetailsInfo()));
@@ -141,13 +141,10 @@ public class OrderBean {
                 .withTotalAmount(order.getTotalAmount().toPlainString())
                 .withIsBasket(order.getStatus() == Order.Status.EDITING)
                 .withStatus(order.getStatus().toString())
-                .withStatusText(order.getStatus().readableValue())
-                .withTrackingNumber(order.getTrackingNumber());
-
-        if (order.getAddress() != null) {
-            result.withAddressInfo(mapper.map(order.getAddress(),AddressInfo.class));
+                .withStatusText(order.getStatus().readableValue());
+        if (order.getShipment() != null) {
+            result.withShipment(mapper.map(order.getShipment(), ru.bookpleasure.models.Shipment.class));
         }
-
         if (order.getCustomerDetails() != null) {
             result.withCustomerDetailsInfo(mapper.map(order.getCustomerDetails(), CustomerDetailsInfo.class));
         }
@@ -175,12 +172,12 @@ public class OrderBean {
         return result;
     }
 
-    private Address addressFromAddressInfo(AddressInfo info) {
-        return mapper.map(info, Address.class);
-    }
-
     private CustomerDetails customerDetailsFromCustomerDetailsInfo(CustomerDetailsInfo info) {
-        return mapper.map(info, CustomerDetails.class);
+        if (info != null) {
+            return mapper.map(info, CustomerDetails.class);
+        } else {
+            return null;
+        }
     }
 
     private Order savePayment(Order order, PaymentInfo info) {

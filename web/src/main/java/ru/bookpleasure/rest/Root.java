@@ -8,8 +8,8 @@ import org.springframework.http.MediaType;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import ru.bookpleasure.MailAgent;
-import ru.bookpleasure.beans.OrderBean;
-import ru.bookpleasure.beans.ProductBean;
+import ru.bookpleasure.beans.OrderService;
+import ru.bookpleasure.beans.ProductService;
 import ru.bookpleasure.db.entities.Product;
 import ru.bookpleasure.models.*;
 
@@ -23,11 +23,11 @@ public class Root {
 
     @Lazy
     @Autowired
-    ProductBean pb;
+    ProductService productService;
 
     @Lazy
     @Autowired
-    OrderBean ob;
+    OrderService orderService;
 
     @Lazy
     @Autowired
@@ -69,7 +69,7 @@ public class Root {
     )
     @ResponseBody
     public List<ProductView> listBoxes() {
-        List<ProductView> result = pb.getEnabledProductByCategory(
+        List<ProductView> result = productService.getEnabledProductByCategory(
                 Product.ProductCategory.BOOKBOX.toString(),
                 Optional.<Sort>empty()
         );
@@ -88,7 +88,7 @@ public class Root {
             @PathVariable("id") String orderId,
             @RequestParam("email") String email
     ) {
-        return ob.getOrderByNumberAndEmail(orderId, email);
+        return orderService.getOrderByNumberAndEmail(orderId, email);
     }
 
     @PostMapping(
@@ -97,7 +97,7 @@ public class Root {
     )
     @ResponseBody
     public OrderView createOrUpdateOrder(@RequestBody OrderView orderView) {
-        return ob.createOrUpdateOrder(orderView);
+        return orderService.createOrUpdateOrder(orderView);
     }
 
     @PostMapping(
@@ -138,8 +138,8 @@ public class Root {
                 .withIsBasket(false)
                 .withId(paymentForm.getFirst("label"))
                 .withCustomerDetailsInfo(customerDetailsInfo)
-                .withPaymentInfo(paymentInfo)
-                .withAddressInfo(addressInfo);
+                .withPaymentInfo(paymentInfo);
+//                .withAddressInfo(addressInfo);
 
         createOrUpdateOrder(orderView);
         return "Ok";

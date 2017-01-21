@@ -10,21 +10,21 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
-import ru.bookpleasure.beans.FilesBean;
+import ru.bookpleasure.beans.FilesService;
 
 @Component
 @Scope(value = WebApplicationContext.SCOPE_APPLICATION)
 public class StartListener implements ApplicationListener<ContextRefreshedEvent> {
 
     @Autowired
-    FilesBean filesBean;
+    FilesService filesService;
 
     /**
      * Загружаем файлы картинок из базы на старте
      */
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
-        filesBean.loadFilesFromDbAfterDeploy();
+        filesService.loadFilesFromDbAfterDeploy();
     }
 
 }

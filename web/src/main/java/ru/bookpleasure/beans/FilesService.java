@@ -10,6 +10,8 @@ import ru.bookpleasure.repos.FilesRepo;
 
 import javax.servlet.ServletContext;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collection;
@@ -21,7 +23,7 @@ import java.util.List;
  */
 @Component
 @Lazy
-public class FilesBean {
+public class FilesService {
 
     @Autowired
     FilesRepo filesRepo;
@@ -56,32 +58,20 @@ public class FilesBean {
     }
 
     public void loadFilesFromDbAfterDeploy() {
-        try {
-            Iterable<ResourceFile> files = filesRepo.findAll();
-            for (ResourceFile rf : files) {
-                this.saveToDisk(rf.getName(), rf.getData());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        filesRepo
+                .findAll()
+                .forEach(
+                        rf -> this.saveToDisk(rf.getName(), rf.getData())
+                );
     }
 
     private void saveToDisk(String fileName, byte[] data) {
-        OutputStream file = null;
-        File imagePath = Paths.get(context.getRealPath(IMAGE_FILES_PATH)).toFile();
-        imagePath.mkdirs();
-        File image = new File(imagePath, fileName);
+        Path imagePath = Paths.get(context.getRealPath(IMAGE_FILES_PATH), fileName);
+        imagePath.toFile().mkdirs();
         try {
-            file = new BufferedOutputStream(new FileOutputStream(image, false));
-            file.write(data);
-            file.flush();
+            Files.write(imagePath, data);
         } catch (IOException e) {
             throw new RuntimeException("write failed");
-        } finally {
-            try {
-                if (file != null) file.close();
-            } catch (IOException e) {
-            }
         }
     }
 

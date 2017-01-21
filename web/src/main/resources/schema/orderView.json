@@ -21,8 +21,39 @@
     "totalAmount": {
       "type": "string"
     },
-    "trackingNumber": {
-      "type": "string"
+    "shipment": {
+      "type": "object",
+      "properties": {
+        "trackingNumber": {
+          "type": "string"
+        },
+        "addressInfo": {
+          "type": "object",
+          "properties": {
+            "city": {
+              "type": "string"
+            },
+            "street": {
+              "type": "string"
+            },
+            "building": {
+              "type": "string"
+            },
+            "suite": {
+              "type": "string"
+            },
+            "flat": {
+              "type": "string"
+            },
+            "zip": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "city"
+          ]
+        }
+      }
     },
     "paymentInfo": {
       "type": "object",
@@ -45,6 +76,7 @@
           "format": "date"
         },
         "currency": {
+          "description": "Валюта платежа",
           "type": "string"
         },
         "paymentSource": {
@@ -108,32 +140,6 @@
       "required": [
         "lastname",
         "firstname"
-      ]
-    },
-    "addressInfo": {
-      "type": "object",
-      "properties": {
-        "city": {
-          "type": "string"
-        },
-        "street": {
-          "type": "string"
-        },
-        "building": {
-          "type": "string"
-        },
-        "suite": {
-          "type": "string"
-        },
-        "flat": {
-          "type": "string"
-        },
-        "zip": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "city"
       ]
     }
   }

@@ -7,8 +7,8 @@ import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import ru.bookpleasure.beans.OrderBean;
-import ru.bookpleasure.beans.ProductBean;
+import ru.bookpleasure.beans.OrderService;
+import ru.bookpleasure.beans.ProductService;
 import ru.bookpleasure.models.OrderView;
 import ru.bookpleasure.models.ProductView;
 import java.io.IOException;
@@ -25,11 +25,11 @@ public class Admin {
 
     @Autowired
     @Lazy
-    ProductBean pb;
+    ProductService pb;
 
     @Autowired
     @Lazy
-    OrderBean ob;
+    OrderService ob;
 
     @GetMapping(
             produces = MediaType.TEXT_PLAIN_VALUE)

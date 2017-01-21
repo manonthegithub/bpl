@@ -19,6 +19,7 @@ public class OrderProduct {
     @JoinColumn(name = "product_id")
     private Product product;
 
+    //количество единиц товара в заказе
     @Column(nullable = false)
     private int number;
 
